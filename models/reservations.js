@@ -24,15 +24,11 @@ module.exports = function (sequelize, DataTypes) {
         },
         checkIn: {
             type: DataTypes.DATE,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         checkOut: {
             type: DataTypes.DATE,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         numberOfRoom: {
             type: DataTypes.INTEGER,

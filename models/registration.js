@@ -6,15 +6,11 @@ module.exports = function (sequelize, DataTypes) {
     var registrationModel = {
         dob: {
             type: DataTypes.DATE,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         roomNumber: {
             type: DataTypes.INTEGER,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         }
     };
 

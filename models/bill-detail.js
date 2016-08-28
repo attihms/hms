@@ -6,15 +6,11 @@ module.exports = function (sequelize, DataTypes) {
     var billDetailModel = {
         tax: {
             type: DataTypes.FLOAT,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         fee: {
             type: DataTypes.DECIMAL(15, 2),
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         }
     };
 

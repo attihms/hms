@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "migrate": "nf start migrate=1",
+    "generate_sample_data": "nf start generate_sample_data=1",
     "test": "nf start test=1",
     "start": "nf start dev=1",
     "build": "nf start build=1",

@@ -6,9 +6,7 @@ module.exports = {
         price: DataTypes.DECIMAL(15, 2),
         paymentMethodId: {
             type: DataTypes.INTEGER,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         paymentMethodName: {
             type: DataTypes.STRING(25),
@@ -23,9 +21,7 @@ module.exports = {
         },
         bookingSourceId: {
             type: DataTypes.INTEGER,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         bookingSourceName: {
             type: DataTypes.STRING(25),
@@ -35,9 +31,7 @@ module.exports = {
         },
         roomId: {
             type: DataTypes.INTEGER,
-            validate: {
-                notNull: true
-            }
+            allowNull: false
         },
         roomType: {
             type: DataTypes.STRING(25),
