@@ -18,10 +18,16 @@ server.get('/reservations', function (req, res, next) {
 });
 
 server.get('/reservation/:id', function (req, res, next) {
-    // Reservation.findAll().then(function(reservations) {
-    //     res.send(reservations);
-    // });
-    res.send(req.params);
+    models.reservation.findById(req.params.id)
+    .then(
+        function(reservation) {
+            res.send(reservation);
+        }
+    ).finally(
+        function(err) {
+            res.send('Not found');
+        }
+    );
 
     return next();
 });
