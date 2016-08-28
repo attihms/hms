@@ -1,5 +1,6 @@
 var restify = require('restify');
 import models from '../models';
+import { Reservation } from './controllers';
 
 var server = restify.createServer({
     name: 'hms',
@@ -28,6 +29,17 @@ server.get('/reservation/:id', function (req, res, next) {
             res.send('Not found');
         }
     );
+
+    return next();
+});
+
+server.post('/reservations', function (req, res, next) {
+    const reservation = new Reservation();
+    reservation
+        .create(req.body)
+        .then((data) => {
+            res.send(data.dataValues);
+        });
 
     return next();
 });

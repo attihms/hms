@@ -5,8 +5,7 @@
 
 # Connect database
 + Create a database on your data server
-+ Rename .env.tmp -> .env
-- Change configuration following your development environment
++ Change `config/config.json` following your development environment
 
 + Migrate & seed
 `node_modules/.bin/sequelize db:migrate`
