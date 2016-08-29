@@ -1,6 +1,7 @@
 # hms
 
 # Back end setup
+cd back-end
 
 ## Install dependencies
 `npm install`
