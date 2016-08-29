@@ -1,6 +1,6 @@
 # hms
 
-# Back end setup
+# Back end setup steps
 cd back-end
 
 ## Install dependencies
@@ -18,4 +18,5 @@ cd back-end
 `npm run generate_sample_data`
 
 ## Start
++ rename `.env.tmp` -> `.env`, change configuration following your development environment.
 `npm start`

@@ -17,6 +17,7 @@ module.exports = function (sequelize, DataTypes) {
     var options = _.extend(
         commonModel.options,
         {
+            timestamps: true,
             paranoid: true
         }
     );
