@@ -1,9 +1,11 @@
 # hms
 
-# Install dependencies
+# Back end setup
+
+## Install dependencies
 `npm install`
 
-# Connect database
+## Connect database
 + Create a database on your data server
 + Change `config/config.json` following your development environment
 
@@ -14,5 +16,5 @@
 + Generate sample data
 `npm run generate_sample_data`
 
-# Start
+## Start
 `npm start`
