@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {IntlProvider} from 'react-intl';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {orange800} from 'material-ui/styles/colors';
@@ -14,8 +15,10 @@ export default class App extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-		{ this.props.children }
-	  </MuiThemeProvider>
+        <IntlProvider locale="en">
+		      { this.props.children }
+        </IntlProvider>
+	     </MuiThemeProvider>
     );
   }
 }

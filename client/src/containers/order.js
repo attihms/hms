@@ -66,7 +66,7 @@ class OrderView extends Component {
 
     let orderBarTitle = `Reservation #${order.id}`;
 
-    let disableForm = false;
+    let disableForm = true;
 
     return (
       <div>

@@ -6,8 +6,13 @@ export const FETCH_ORDER = 'FETCH_ORDER';
 export const DELETE_ORDER = 'DELETE_ORDER';
 export const EDIT_ORDER = 'EDIT_ORDER';
 
-const port = !!window.location.port ? ':' + window.location.port : null;
-export const ROOT_URL = `${window.location.protocol}//${window.location.hostname}${port}/api`;
+// const port = !!window.location.port ? ':' + window.location.port : null;
+// export const ROOT_URL = `${window.location.protocol}//${window.location.hostname}${port}/api`;
+const protocol = 'http:';
+const hostname = 'localhost';
+const port = ':8080';
+const apiPrefix = ''; // '/api';
+export const ROOT_URL = `${window.location.protocol}//${window.location.hostname}${port}${apiPrefix}`;
 
 export const API_KEY = '';
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
-import { reduxForm } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 import { createOrder, fetchOrder, editOrder } from '../actions';
 
 import { Grid, Row, Col } from 'react-flexbox-grid/lib';
@@ -108,8 +108,32 @@ class OrderNew extends Component {
 
   componentWillMount() {
     if (this.props.params.id) {
+      console.log('id');
       this.props.fetchOrder(this.props.params.id)
         .then( () => this.setState({ loading: false }) );
+    } else {
+      // this.props.dispatch(reset('OrderNewForm'));
+      console.log('reset');
+      // this.props.values = {
+      //   firstName: null,
+      //   middleName: null,
+      //   lastName: null,
+      //   title: null,
+      //   checkIn: null,
+      //   checkOut: null,
+      //   nationality: null,
+      //   bookingSource: null,
+      //   roomType: null,
+      //   price: 0,
+      //   numberOfRoom: 1,
+      //   numberOfPerson: 1,
+      //   enfant: null,
+      //   paymentMethod: null,
+      //   specialRequest: null
+      // }
+      // this.props.destroyForm();
+      // this.props.newOrder();
+      // this.setState({ loading: false });
     }
   }
 
@@ -147,7 +171,7 @@ class OrderNew extends Component {
             floatingLabelText={fieldConfig.label}
             hintText={fieldConfig.hint}
             fullWidth={true}
-            value={fieldHelper.value || ''}
+            defaultValue={fieldHelper.defaultValue || ''}
           />
         )
         break;
@@ -207,30 +231,27 @@ class OrderNew extends Component {
     // const { handleSubmit } = this.props;
     // const handleSubmit = this.props.handleSubmit;
     const editMode = this.props.params.id ? true : false;
+    
     let { handleSubmit } = this.props;
     const { createOrder } = this.props;
 
     let orderBarTitle = editMode ? `Reservation #${this.props.params.id}` : `New Reservation`;
+
+    console.dir(this.props);
 
 		return (
       <div>
         <AppBar 
           title={orderBarTitle} 
           iconElementLeft={this.renderBarLeftIcon()}
-          iconElementRight={this.renderBarRightIcon(this.props.params.id)}
           />
         <Grid>
-          <Row>
-            <Col xs={12}>
-              <h2>Create A New Reservation</h2>
-            </Col>
-          </Row>
           <form onSubmit={ handleSubmit( this.onSubmit.bind(this) ) }>
             <Row>
               {_.map( FIELDS, this.renderField.bind(this) )}
             </Row>
 
-            <RaisedButton primary={true}  type='submit' label={ editMode ? 'Save Changes' : 'Submit' }/>
+            <RaisedButton primary={true}  type='submit' label={ editMode ? 'Save Changes' : 'Create New' }/>
           </form>
         </Grid>
       </div>

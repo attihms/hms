@@ -66,7 +66,7 @@
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-flexbox-grid": "^0.10.2",
-    "react-grid-layout": "^0.13.1",
+    "react-intl": "^2.1.4",
     "react-redux": "^4.0.0",
     "react-router": "^2.2.1",
     "react-tap-event-plugin": "^1.0.0",

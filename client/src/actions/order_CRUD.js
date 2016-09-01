@@ -6,7 +6,7 @@ import {
 
 export function fetchOrders() {
 
-  const request = axios.get(`${ROOT_URL}/posts${API_KEY}`);
+  const request = axios.get(`${ROOT_URL}/reservations${API_KEY}`);
 
   return {
     type: FETCH_ORDERS,
@@ -14,19 +14,9 @@ export function fetchOrders() {
   }
 }
 
-export function createOrder(props) {
-
-  const request = axios.post(`${ROOT_URL}/posts${API_KEY}`, props);
-
-  return {
-    type: CREATE_ORDER,
-    payload: request
-  }
-}
-
 export function fetchOrder(id) {
 
-  const request = axios.get(`${ROOT_URL}/posts/${id}${API_KEY}`);
+  const request = axios.get(`${ROOT_URL}/reservation/${id}${API_KEY}`);
 
   return {
     type: FETCH_ORDER,
@@ -34,23 +24,32 @@ export function fetchOrder(id) {
   }
 }
 
-export function deleteOrder(id) {
+export function createOrder(props) {
 
-  const request = axios.delete(`${ROOT_URL}/posts/${id}${API_KEY}`);
+  const request = axios.post(`${ROOT_URL}/reservations${API_KEY}`, props);
 
   return {
-    type: DELETE_ORDER,
+    type: CREATE_ORDER,
     payload: request
   }
 }
 
-
 export function editOrder(id, props) {
 
-  const request = axios.put(`${ROOT_URL}/posts/edit/${id}${API_KEY}`, props);
+  const request = axios.put(`${ROOT_URL}/reservations/${id}${API_KEY}`, props);
 
   return {
     type: EDIT_ORDER,
+    payload: request
+  }
+}
+
+export function deleteOrder(id) {
+
+  const request = axios.delete(`${ROOT_URL}/reservations/${id}${API_KEY}`);
+
+  return {
+    type: DELETE_ORDER,
     payload: request
   }
 }

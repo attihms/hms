@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Redirect } from 'react-router';
 
 import App from './components/app';
 import OrdersList from './containers/orders_list';
@@ -12,5 +12,6 @@ export default (
     <Route path='reservation/new' component={ OrderNew } />
     <Route path='reservation/edit/:id' component={ OrderNew } />
     <Route path='reservation/:id' component={ Order } />
+    <Redirect from='*' to='/' />
   </Route>
 )

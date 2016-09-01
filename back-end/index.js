@@ -6,6 +6,7 @@ var server = restify.createServer({
     name: 'hms',
     version: '1.0.0'
 });
+server.use(restify.CORS());
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());

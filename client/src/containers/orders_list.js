@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchOrders } from '../actions';
 
 import { Link } from 'react-router';
+import { FormattedDate, FormattedTime } from 'react-intl';
 
 import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
@@ -29,6 +30,16 @@ class OrdersList extends Component {
   componentWillUnmount() {}
 
   renderOrder() {
+    const dateFormat = {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit'
+    }
+    const timeFormat = {
+      hour12: false,
+      hour: 'numeric',
+      minute: 'numeric'
+    }
     return this.props.orders.map((order) => {
       return (
         <TableRow key={order.id}>
@@ -38,8 +49,14 @@ class OrdersList extends Component {
           </Link>
           </TableRowColumn>
           <TableRowColumn>{ order.roomType }</TableRowColumn>
-          <TableRowColumn>{ order.checkIn }</TableRowColumn>
-          <TableRowColumn>{ order.checkOut }</TableRowColumn>
+          <TableRowColumn>
+            <FormattedDate value={order.checkIn} {...dateFormat}/>
+            <b>&nbsp;&nbsp;<FormattedTime value={order.checkOut} {...timeFormat}/></b>
+          </TableRowColumn>
+          <TableRowColumn>
+            <FormattedDate value={order.checkOut} {...dateFormat}/>
+            <b>&nbsp;&nbsp;<FormattedTime value={order.checkOut} {...timeFormat}/></b>
+          </TableRowColumn>
         </TableRow>
       )
     });
@@ -86,7 +103,7 @@ class OrdersList extends Component {
 		return (
 			<div>
         <AppBar
-          title="My Hotel Managment System"
+          title="Hotel Managment System"
           iconElementLeft={<span></span>}
           iconElementRight={ this.renderBarRightIcon() }
           />
