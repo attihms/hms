@@ -12,9 +12,7 @@ import IconButton from 'material-ui/IconButton/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import {  Table, TableBody, TableFooter,
-          TableHeader, TableHeaderColumn, TableRow,
-          TableRowColumn } from 'material-ui/Table';
+import SmartTable from '../components/table/SmartTable';
 
 class OrdersList extends Component {
   constructor(props) {
@@ -28,39 +26,6 @@ class OrdersList extends Component {
 	}
 
   componentWillUnmount() {}
-
-  renderOrder() {
-    const dateFormat = {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit'
-    }
-    const timeFormat = {
-      hour12: false,
-      hour: 'numeric',
-      minute: 'numeric'
-    }
-    return this.props.orders.map((order) => {
-      return (
-        <TableRow key={order.id}>
-          <TableRowColumn>
-            <Link to={`reservation/${order.id}`}>
-            <strong>{ `${order.title} ${order.firstName} ${order.lastName}`}</strong>
-          </Link>
-          </TableRowColumn>
-          <TableRowColumn>{ order.roomType }</TableRowColumn>
-          <TableRowColumn>
-            <FormattedDate value={order.checkIn} {...dateFormat}/>
-            <b>&nbsp;&nbsp;<FormattedTime value={order.checkOut} {...timeFormat}/></b>
-          </TableRowColumn>
-          <TableRowColumn>
-            <FormattedDate value={order.checkOut} {...dateFormat}/>
-            <b>&nbsp;&nbsp;<FormattedTime value={order.checkOut} {...timeFormat}/></b>
-          </TableRowColumn>
-        </TableRow>
-      )
-    });
-  }
 
   renderBarRightIcon() {
     return (
@@ -78,57 +43,64 @@ class OrdersList extends Component {
     )
   }
 
+  goTo(id) {
+    console.log(id);
+  }
+
 	render() {
-    let tableConfig = {
-      height: 'calc(100vh - 200px)',
-      fixedHeader: true,
-      fixedFooter: true,
-      selectable: true,
-      multiSelectable: false
-    }
+    const headerArr = [
+      {alias: 'Name', dataAlias: 'lastName', format: {
+        type: 'linkNameFormola', url: 'reservation/', names: ['title', 'firstName', 'lastName']}
+      },
+      {alias: 'Room Type', dataAlias: 'roomType', format: {type: 'text'}},
+      {alias: 'Check In', dataAlias: 'checkIn', format: {type: 'dateTime'}},
+      {alias: 'Check Out', dataAlias: 'checkOut', format: {type: 'dateTime'}}
+    ];
+    const tableConf = {
+      tableHeaders: headerArr,
+      data: this.props.orders,
+      offset: 0,
+      total: 99,
+      limit: 10,
+      onPageClick: this.goTo
+    };
 
-    let headerConfig = {
-      displaySelectAll: false,
-      adjustForCheckbox: false,
-      enableSelectAll: false,
-    }
-
-    let bodyConfig = {
-      displayRowCheckbox: false,
-      deselectOnClickaway: false,
-      stripedRows: false,
-      showRowHover: false
-    }
-
-		return (
-			<div>
+    return (
+      <div>
         <AppBar
           title="Hotel Managment System"
           iconElementLeft={<span></span>}
           iconElementRight={ this.renderBarRightIcon() }
           />
-        <Table {...tableConfig}>
-          <TableHeader {...headerConfig}>
-            <TableRow>
-              <TableHeaderColumn colSpan="4">
-                <Link to='/reservation/new'>
-                  <RaisedButton label="Add New Reservation" primary={true} />
-                </Link>
-              </TableHeaderColumn>
-            </TableRow>
-            <TableRow>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Room Type</TableHeaderColumn>
-              <TableHeaderColumn>Check In</TableHeaderColumn>
-              <TableHeaderColumn>Check Out</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody {...bodyConfig}>
-            { this.renderOrder() }
-          </TableBody>
-        </Table>
-			</div>
-		);
+          <br />
+          <Link to='/reservation/new'>
+            <RaisedButton label="Add New Reservation" primary={true} />
+          </Link>
+          <br />
+          <SmartTable {...tableConf}/>
+      </div>
+    );
+
+  //   let tableConfig = {
+  //     height: 'calc(100vh - 200px)',
+  //     fixedHeader: true,
+  //     fixedFooter: true,
+  //     selectable: true,
+  //     multiSelectable: false
+  //   }
+
+  //   let headerConfig = {
+  //     displaySelectAll: false,
+  //     adjustForCheckbox: false,
+  //     enableSelectAll: false,
+  //   }
+
+  //   let bodyConfig = {
+  //     displayRowCheckbox: false,
+  //     deselectOnClickaway: false,
+  //     stripedRows: false,
+  //     showRowHover: false
+  //   }
 	}
 }
 
