@@ -1,15 +1,19 @@
+import React, { PropTypes, Component } from 'react';
+
 import { 
   Table, TableBody, TableHeader,
   TableHeaderColumn, TableRow, TableRowColumn, 
   TableFooter } from 'material-ui/Table';
-import SmartTableRow from './SmartTableRow';
-import React, { PropTypes, Component } from 'react';
-import styles from './SmartTable.scss';
 import SortIcon from 'material-ui/svg-icons/action/swap-vert';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+// import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import SmartTableRow from './SmartTableRow';
+
+import _ from 'lodash';
+
+import styles from './SmartTable.scss';
 
 function sortFunc(a, b, key) {
   if (typeof(a[key]) === 'number') {
@@ -34,22 +38,44 @@ function sortFunc(a, b, key) {
 
 class SmartTable extends Component {
 
-  static childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired
-  }
+  // static childContextTypes = {
+  //   muiTheme: React.PropTypes.object.isRequired
+  // }
 
   constructor(props, context) {
     super(props, context);
-    this.state = { isAsc: false, sortHeader: null };
+    this.state = {
+      isAsc: false,
+      sortHeader: null,
+      paginatedData: [],
+      offset: 0
+    };
+
+    this.onPageClick = this.onPageClick.bind(this);
   }
 
-  getChildContext() {
-    return { muiTheme: getMuiTheme() };
+  componentWillReceiveProps(props) {
+    this.setState({
+      data: props.data,
+      paginatedData:  _.take(_.drop(props.data, props.offset), props.limit),
+      offset: props.offset
+    });
   }
+
+  onPageClick(offset) {
+    this.setState({
+      paginatedData: _.take(_.drop(this.state.data, offset), this.props.limit),
+      offset
+    });
+  }
+
+  // getChildContext() {
+  //   return { muiTheme: getMuiTheme() };
+  // }
 
   sortByColumn(column, data) {
     const isAsc = this.state.sortHeader === column ? !this.state.isAsc : true;
-    const sortedData = data.sort((a, b) => sortFunc(a, b, column));
+    const sortedData = this.props.data.sort((a, b) => sortFunc(a, b, column));
 
     if (!isAsc) {
       sortedData.reverse();
@@ -57,21 +83,29 @@ class SmartTable extends Component {
 
     this.setState({
       data: sortedData,
+      paginatedData: _.take(_.drop(sortedData, 0), this.props.limit),
+      offset: 0,
       sortHeader: column,
       isAsc
     });
   }
 
   render() {
-    const { offset, limit, total, tableHeaders, data, onPageClick } = this.props;
+    const { limit, total, tableHeaders } = this.props;
+    let { paginatedData, offset } = this.state;
 
-    if(!data.length) {
+    if(!paginatedData.length) {
       return <div>Loading...</div>
     }
 
     return (
       <Table className={ styles.table } selectable={false}>
         <TableHeader displaySelectAll ={false} adjustForCheckbox={false}>
+          <TableRow>
+            <TableHeaderColumn colSpan={tableHeaders.length}>
+              { this.props.children }
+            </TableHeaderColumn>
+          </TableRow>
           <TableRow>
             {!!tableHeaders && tableHeaders.map((header, index) => (
               <TableHeaderColumn key={index}>
@@ -80,7 +114,7 @@ class SmartTable extends Component {
                   <SortIcon
                     id={header.dataAlias}
                     className={ styles.sortIcon }
-                    onMouseUp={(e) => this.sortByColumn(e.target.id, data) }
+                    onMouseUp={(e) => this.sortByColumn(e.target.id) }
                   />
                 </div>
               </TableHeaderColumn>
@@ -88,7 +122,7 @@ class SmartTable extends Component {
           </TableRow>
         </TableHeader>
         <TableBody showRowHover stripedRows displayRowCheckbox={false}>
-          {data.map((row, index) => (
+          {paginatedData.map((row, index) => (
             <SmartTableRow key={index} {...{ row, index, tableHeaders }} />
           ))}
         </TableBody>
@@ -97,10 +131,10 @@ class SmartTable extends Component {
             <TableRowColumn>
                 <div className={ styles.footerControls }>
                   { `${Math.min((offset + 1), total)} - ${Math.min((offset + limit), total)} of ${total}` }
-                  <IconButton disabled={offset === 0} onClick={onPageClick.bind(null, offset - limit)}>
+                  <IconButton disabled={offset === 0} onClick={this.onPageClick.bind(null, offset - limit)}>
                     <ChevronLeft/>
                   </IconButton>
-                  <IconButton disabled={offset + limit >= total} onClick={onPageClick.bind(null, offset + limit)}>
+                  <IconButton disabled={offset + limit >= total} onClick={this.onPageClick.bind(null, offset + limit)}>
                     <ChevronRight/>
                   </IconButton>
                 </div>

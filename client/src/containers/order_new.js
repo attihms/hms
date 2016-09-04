@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
-import { reduxForm, reset } from 'redux-form';
+import { reduxForm, reset, change } from 'redux-form';
 import { createOrder, fetchOrder, editOrder } from '../actions';
 
 import { Grid, Row, Col } from 'react-flexbox-grid/lib';
@@ -112,29 +112,14 @@ class OrderNew extends Component {
       this.props.fetchOrder(this.props.params.id)
         .then( () => this.setState({ loading: false }) );
     } else {
-      // this.props.dispatch(reset('OrderNewForm'));
+      // TODO: reset flields
       console.log('reset');
-      // this.props.values = {
-      //   firstName: null,
-      //   middleName: null,
-      //   lastName: null,
-      //   title: null,
-      //   checkIn: null,
-      //   checkOut: null,
-      //   nationality: null,
-      //   bookingSource: null,
-      //   roomType: null,
-      //   price: 0,
-      //   numberOfRoom: 1,
-      //   numberOfPerson: 1,
-      //   enfant: null,
-      //   paymentMethod: null,
-      //   specialRequest: null
-      // }
-      // this.props.destroyForm();
-      // this.props.newOrder();
-      // this.setState({ loading: false });
     }
+  }
+
+  componentWillUnmount() {
+    // TODO: reset all fields
+    console.log('bye');
   }
 
   onSubmit(formProps) {

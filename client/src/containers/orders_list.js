@@ -18,7 +18,7 @@ class OrdersList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {};
   }
 
 	componentWillMount() {
@@ -41,10 +41,6 @@ class OrdersList extends Component {
         <MenuItem primaryText="Sign out" />
       </IconMenu>
     )
-  }
-
-  goTo(id) {
-    console.log(id);
   }
 
 	render() {
@@ -73,11 +69,11 @@ class OrdersList extends Component {
           iconElementRight={ this.renderBarRightIcon() }
           />
           <br />
-          <Link to='/reservation/new'>
-            <RaisedButton label="Add New Reservation" primary={true} />
-          </Link>
-          <br />
-          <SmartTable {...tableConf}/>
+          <SmartTable {...tableConf}>
+            <Link to='/reservation/new'>
+              <RaisedButton label="Add New Reservation" primary={true} />
+            </Link>
+          </SmartTable>
       </div>
     );
 
