@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { reduxForm, reset, change } from 'redux-form';
-import { createOrder, fetchOrder, editOrder } from '../actions';
+import { createOrder, fetchOrder, editOrder, clearOrder } from '../actions';
 
 import { Grid, Row, Col } from 'react-flexbox-grid/lib';
 
@@ -17,22 +17,18 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-const FIELDS = {
+import styles from './general.scss';
+
+const FIELDS_USER = {
   title: {
     type: 'select',
     label: 'Title',
     hint: 'hint hint',
     options: [{id: 'Mr', name: 'Mr'}, {id: 'Ms', name: 'Ms'}, {id: 'Mrs', name: 'Mrs'}]
-
   },
   firstName: {
     type: 'input',
     label: 'First Name',
-    hint: 'hint hint'
-  },
-  middleName: {
-    type: 'input',
-    label: 'Middle Name',
     hint: 'hint hint'
   },
   lastName: {
@@ -40,7 +36,19 @@ const FIELDS = {
     label: 'Last Name',
     hint: 'hint hint'
   },
+  middleName: {
+    type: 'input',
+    label: 'Middle Name',
+    hint: 'hint hint'
+  },
+  nationality: {
+    type: 'input',
+    label: 'Nationality',
+    hint: 'hint hint'
+  }
+};
 
+const FIELDS_ORDER = {
   checkIn: {
     type: 'input',
     label: 'Check In Date',
@@ -49,11 +57,6 @@ const FIELDS = {
   checkOut: {
     type: 'input',
     label: 'Check Out Date',
-    hint: 'hint hint'
-  },
-  nationality: {
-    type: 'input',
-    label: 'Nationality',
     hint: 'hint hint'
   },
   bookingSource: {
@@ -66,12 +69,6 @@ const FIELDS = {
     label: 'Room Type',
     hint: 'hint hint'
   },
-  price: {
-    type: 'input',
-    label: 'Price',
-    hint: 'hint hint'
-  },
-
   numberOfRoom: {
     type: 'input',
     label: 'Number Of Room',
@@ -85,6 +82,14 @@ const FIELDS = {
   enfant: {
     type: 'input',
     label: 'Enfant',
+    hint: 'hint hint'
+  }
+};
+
+const FIELDS_BILL = {
+  price: {
+    type: 'input',
+    label: 'Final Price',
     hint: 'hint hint'
   },
   paymentMethod: {
@@ -108,18 +113,13 @@ class OrderNew extends Component {
 
   componentWillMount() {
     if (this.props.params.id) {
-      console.log('id');
       this.props.fetchOrder(this.props.params.id)
         .then( () => this.setState({ loading: false }) );
-    } else {
-      // TODO: reset flields
-      console.log('reset');
     }
   }
 
   componentWillUnmount() {
-    // TODO: reset all fields
-    console.log('bye');
+    this.props.clearOrder();
   }
 
   onSubmit(formProps) {
@@ -213,16 +213,12 @@ class OrderNew extends Component {
       return <div>Loading....</div>
     }
 
-    // const { handleSubmit } = this.props;
-    // const handleSubmit = this.props.handleSubmit;
     const editMode = this.props.params.id ? true : false;
     
     let { handleSubmit } = this.props;
     const { createOrder } = this.props;
 
     let orderBarTitle = editMode ? `Reservation #${this.props.params.id}` : `New Reservation`;
-
-    console.dir(this.props);
 
 		return (
       <div>
@@ -231,11 +227,27 @@ class OrderNew extends Component {
           iconElementLeft={this.renderBarLeftIcon()}
           />
         <Grid>
-          <form onSubmit={ handleSubmit( this.onSubmit.bind(this) ) }>
+          <form className={ styles.markdownBody } style={{padding: '50px 20px'}}
+                onSubmit={ handleSubmit( this.onSubmit.bind(this) ) }>
+
+            <h2>User Information</h2>
             <Row>
-              {_.map( FIELDS, this.renderField.bind(this) )}
+              {_.map( FIELDS_USER, this.renderField.bind(this) )}
+            </Row>
+            <br />
+
+            <h2>Order Information</h2>
+            <Row>
+              {_.map( FIELDS_ORDER, this.renderField.bind(this) )}
+            </Row>
+            <br />
+
+            <h2>Payment Bill</h2>
+            <Row>
+              {_.map( FIELDS_BILL, this.renderField.bind(this) )}
             </Row>
 
+            <br />
             <RaisedButton primary={true}  type='submit' label={ editMode ? 'Save Changes' : 'Create New' }/>
           </form>
         </Grid>
@@ -247,7 +259,9 @@ class OrderNew extends Component {
 function validate(values) {
   const errors = {};
 
-  _.each(FIELDS, (type, field) => {
+  let totalFields = _.concat([], FIELDS_USER, FIELDS_ORDER, FIELDS_BILL);
+
+  _.each(totalFields, (type, field) => {
     if(!values[field]){
       errors[field] = `Enter a ${field}`;
     }
@@ -255,7 +269,9 @@ function validate(values) {
 
   return errors;
 }
+
 function mapStateToProps(state) {
+  // return null;
   return { initialValues: state.orders.order }
 }
 
@@ -263,6 +279,6 @@ function mapStateToProps(state) {
 // reduxForm: 1st is form config, 2nd is mapStateToProps, 3rd is mapDispatchToProps
 export default reduxForm({
   form: 'OrderNewForm',
-  fields: _.keys(FIELDS),
+  fields: _.concat([], _.keys(FIELDS_USER), _.keys(FIELDS_ORDER), _.keys(FIELDS_BILL)),
   validate
-}, mapStateToProps, { createOrder, fetchOrder, editOrder })(OrderNew);
+}, mapStateToProps, { createOrder, fetchOrder, editOrder, clearOrder })(OrderNew);

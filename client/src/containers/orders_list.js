@@ -44,7 +44,11 @@ class OrdersList extends Component {
   }
 
 	render() {
+
+    let { orders } = this.props;
+
     const headerArr = [
+      {alias: 'ID', dataAlias: 'id', format: {type: 'text'}},
       {alias: 'Name', dataAlias: 'lastName', format: {
         type: 'linkNameFormola', url: 'reservation/', names: ['title', 'firstName', 'lastName']}
       },
@@ -52,11 +56,12 @@ class OrdersList extends Component {
       {alias: 'Check In', dataAlias: 'checkIn', format: {type: 'dateTime'}},
       {alias: 'Check Out', dataAlias: 'checkOut', format: {type: 'dateTime'}}
     ];
+
     const tableConf = {
       tableHeaders: headerArr,
-      data: this.props.orders,
+      data: orders,
       offset: 0,
-      total: 99,
+      total: orders.length,
       limit: 10,
       onPageClick: this.goTo
     };

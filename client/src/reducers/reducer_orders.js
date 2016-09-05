@@ -1,4 +1,4 @@
-import { FETCH_ORDERS, FETCH_ORDER } from '../actions';
+import { FETCH_ORDERS, FETCH_ORDER, CLEAR_ORDER } from '../actions';
 
 const INIT_STATE = {
 	all: [],
@@ -9,7 +9,8 @@ const INIT_STATE = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [FETCH_ORDER]: (state, action) => ({ ...state, order: action.payload.data }),
-  [FETCH_ORDERS]: (state, action) => ({ ...state, all: action.payload.data })
+  [FETCH_ORDERS]: (state, action) => ({ ...state, all: action.payload.data }),
+  [CLEAR_ORDER]: (state, action) => ({ ...state, order: null })
 };
 
 // ------------------------------------

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   ROOT_URL, API_KEY, 
-  FETCH_ORDERS, CREATE_ORDER, FETCH_ORDER, DELETE_ORDER, EDIT_ORDER
+  FETCH_ORDERS, CREATE_ORDER, FETCH_ORDER, DELETE_ORDER, EDIT_ORDER, CLEAR_ORDER
 } from './';
 
 export function fetchOrders() {
@@ -51,5 +51,11 @@ export function deleteOrder(id) {
   return {
     type: DELETE_ORDER,
     payload: request
+  }
+}
+
+export function clearOrder(id) {
+  return {
+    type: CLEAR_ORDER
   }
 }
