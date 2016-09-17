@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
-import { 
+import {
   Table, TableBody, TableHeader,
-  TableHeaderColumn, TableRow, TableRowColumn, 
+  TableHeaderColumn, TableRow, TableRowColumn,
   TableFooter } from 'material-ui/Table';
 import SortIcon from 'material-ui/svg-icons/action/swap-vert';
 import IconButton from 'material-ui/IconButton';

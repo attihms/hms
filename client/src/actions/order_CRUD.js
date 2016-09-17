@@ -1,11 +1,11 @@
 import axios from 'axios';
 import {
-  ROOT_URL, API_KEY, 
+  ROOT_URL, API_KEY,
   FETCH_ORDERS, CREATE_ORDER, FETCH_ORDER, DELETE_ORDER, EDIT_ORDER, CLEAR_ORDER
 } from './';
 
-export function fetchOrders() {
-
+export function fetchOrders(token) {
+  axios.defaults.headers.common['Authorization'] = token;
   const request = axios.get(`${ROOT_URL}/reservations${API_KEY}`);
 
   return {

@@ -1,24 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { Router, browserHistory } from 'react-router';
-import promise from 'redux-promise';
+import { browserHistory } from 'react-router';
 
-import style from './style/style.css';
-import reducers from './reducers';
-import routes from './routes';
+// import style from './style/style.css';
+import Root from './containers/root';
+import store from './store';
 
 // Needed for onTouchTap
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-const createStoreWithMiddleware = applyMiddleware(
-  promise
-)(createStore);
-
 render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <Router history={browserHistory} routes={routes} />
-  </Provider>
-  , document.getElementById('root'));
+    <Root store={ store() } history={ browserHistory } />
+    , document.getElementById('root')
+);

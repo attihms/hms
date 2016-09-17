@@ -1,0 +1,14 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "postgres": "postgres://postgres:password@localhost:5430/hms_dev",
+  "public": "../public/",
+  "auth": {
+    "idField": "id",
+    "token": {
+      "secret": "7htadA+35dBxgdkGAhVSI1ScdW3t0Dca1H4L/ouk9O76QLRD9Sn3Z/nTuPm3SsHlay62fzWWkb9muSilOGTBqQ=="
+    },
+    "local": {},
+    "successRedirect": "/reservation.html"
+  }
+}

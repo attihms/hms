@@ -22,7 +22,14 @@ class OrdersList extends Component {
   }
 
 	componentWillMount() {
-		this.props.fetchOrders();
+    const {
+      token,
+      fetchOrders
+    } = this.props;
+
+    if (token) {
+      fetchOrders(token);
+    }
 	}
 
   componentWillUnmount() {}
@@ -44,8 +51,8 @@ class OrdersList extends Component {
   }
 
 	render() {
-
     let { orders } = this.props;
+    const data = orders.data;
 
     const headerArr = [
       {alias: 'ID', dataAlias: 'id', format: {type: 'text'}},
@@ -59,7 +66,7 @@ class OrdersList extends Component {
 
     const tableConf = {
       tableHeaders: headerArr,
-      data: orders,
+      data: data,
       offset: 0,
       total: orders.length,
       limit: 10,
@@ -106,7 +113,17 @@ class OrdersList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { orders: state.orders.all }
+  const {
+    orders,
+    auth: {
+      token
+    }
+  } = state;
+
+  return {
+    orders: orders.all,
+    token: token
+  }
 }
 
 export default connect( mapStateToProps, { fetchOrders } )(OrdersList);
