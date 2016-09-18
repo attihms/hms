@@ -4,8 +4,13 @@ import {
   FETCH_ORDERS, CREATE_ORDER, FETCH_ORDER, DELETE_ORDER, EDIT_ORDER, CLEAR_ORDER
 } from './';
 
-export function fetchOrders(token) {
+function getToken() {
+  const token = localStorage.getItem('feathers-jwt');
   axios.defaults.headers.common['Authorization'] = token;
+}
+
+export function fetchOrders() {
+  getToken();
   const request = axios.get(`${ROOT_URL}/reservations${API_KEY}`);
 
   return {
@@ -15,8 +20,8 @@ export function fetchOrders(token) {
 }
 
 export function fetchOrder(id) {
-
-  const request = axios.get(`${ROOT_URL}/reservation/${id}${API_KEY}`);
+  getToken();
+  const request = axios.get(`${ROOT_URL}/reservations/${id}${API_KEY}`);
 
   return {
     type: FETCH_ORDER,
@@ -25,7 +30,7 @@ export function fetchOrder(id) {
 }
 
 export function createOrder(props) {
-
+  getToken();
   const request = axios.post(`${ROOT_URL}/reservations${API_KEY}`, props);
 
   return {
@@ -35,7 +40,7 @@ export function createOrder(props) {
 }
 
 export function editOrder(id, props) {
-
+  getToken();
   const request = axios.put(`${ROOT_URL}/reservations/${id}${API_KEY}`, props);
 
   return {
@@ -45,7 +50,7 @@ export function editOrder(id, props) {
 }
 
 export function deleteOrder(id) {
-
+  getToken();
   const request = axios.delete(`${ROOT_URL}/reservations/${id}${API_KEY}`);
 
   return {

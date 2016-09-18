@@ -6,24 +6,24 @@ import routes from '../../routes'
 import DevTools from './dev-tools'
 
 export default class Root extends Component {
-    render() {
-        const {
-            store,
-            history
-        } = this.props
+  render() {
+    const {
+      store,
+      history
+    } = this.props
 
-        return (
-            <Provider store={store}>
-                <div>
-                    <Router history={history} routes={routes} />
-                    <DevTools />
-                </div>
-            </Provider>
-        )
-    }
+    return (
+      <Provider store={store}>
+        <div>
+          <Router history={history} routes={routes} />
+          <DevTools />
+        </div>
+      </Provider>
+    )
+  }
 }
 
 Root.propTypes = {
-    store: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+  store: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 }

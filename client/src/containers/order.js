@@ -78,8 +78,8 @@ class OrderView extends Component {
 
     return (
       <div>
-        <AppBar 
-          title={orderBarTitle} 
+        <AppBar
+          title={orderBarTitle}
           iconElementLeft={this.renderBarLeftIcon()}
           iconElementRight={this.renderBarRightIcon(this.props.params.id)}
           />
@@ -94,7 +94,7 @@ class OrderView extends Component {
                 </Row>
               </Col>
             </Row>
-            
+
             <h2>User Information</h2>
             <Row>
               <Col xs={12} sm={6} md={3}>

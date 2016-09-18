@@ -28,7 +28,7 @@ class OrdersList extends Component {
     } = this.props;
 
     if (token) {
-      fetchOrders(token);
+      fetchOrders();
     }
 	}
 

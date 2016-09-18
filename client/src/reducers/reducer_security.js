@@ -2,7 +2,8 @@ import {
   combineReducers
 } from 'redux'
 import {
-  LOGIN_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
   LOGIN_SUCCESS,
   LOGIN_FAILURE
 } from '../actions'
@@ -16,7 +17,11 @@ const init = {
 
 export default function (state = init, action) {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case REGISTER_SUCCESS:
+      return {...state,
+        ...action.payload
+      };
+    case REGISTER_FAILURE:
       return {...state,
         ...action.payload
       };

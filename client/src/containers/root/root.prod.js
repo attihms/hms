@@ -5,21 +5,21 @@ import { Provider } from 'react-redux'
 import routes from '../../routes'
 
 export default class Root extends Component {
-    render() {
-        const {
-            store,
-            history
-        } = this.props
+  render() {
+    const {
+      store,
+      history
+    } = this.props
 
-        return (
-            <Provider store={store}>
-                <Router history={history} routes={routes} />
-            </Provider>
-        )
-    }
+    return (
+      <Provider store={store}>
+        <Router history={history} routes={routes} />
+      </Provider>
+    )
+  }
 }
 
 Root.propTypes = {
-    store: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+  store: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 }

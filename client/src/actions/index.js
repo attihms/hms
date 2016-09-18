@@ -1,16 +1,17 @@
-import { login } from './security';
+import { signup, login } from './security';
 import {
-    fetchOrders,
-    createOrder,
-    fetchOrder,
-    deleteOrder,
-    editOrder,
-    clearOrder
+  fetchOrders,
+  createOrder,
+  fetchOrder,
+  deleteOrder,
+  editOrder,
+  clearOrder
 } from './order_CRUD';
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_FAILURE = 'REGISTER_FAILURE';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 export const FETCH_ORDERS = 'FETCH_ORDERS';
 export const CREATE_ORDER = 'CREATE_ORDER';
@@ -30,11 +31,12 @@ export const ROOT_URL = `${protocol}//${hostname}${port}${apiPrefix}`;
 export const API_KEY = '';
 
 export {
-    login,
-    fetchOrders,
-    createOrder,
-    fetchOrder,
-    deleteOrder,
-    editOrder,
-    clearOrder
+  signup,
+  login,
+  fetchOrders,
+  createOrder,
+  fetchOrder,
+  deleteOrder,
+  editOrder,
+  clearOrder
 }

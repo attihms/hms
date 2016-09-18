@@ -6,6 +6,13 @@ import {
   hooks as auth
 } from 'feathers-authentication';
 
+const manipulateData = (hook, next) => {
+  // const { data } = hook.result;
+  // hook.result.data = data[0];
+
+  next();
+};
+
 exports.before = {
   all: [
     auth.verifyToken(),
@@ -22,7 +29,7 @@ exports.before = {
 
 exports.after = {
   all: [],
-  find: [],
+  find: [manipulateData],
   get: [],
   create: [],
   update: [],

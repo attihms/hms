@@ -1,5 +1,4 @@
 'use strict';
-const event = require('./event');
 const reservation = require('./reservation');
 const authentication = require('./authentication');
 const user = require('./user');
@@ -16,5 +15,4 @@ module.exports = function() {
   app.configure(authentication);
   app.configure(user);
   app.configure(reservation);
-  app.configure(event);
 };
