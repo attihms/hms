@@ -132,7 +132,7 @@
     -ms-user-select: none;
     user-select: none;
   }
-  .octicon-link:before {
+  .octiconLink:before {
     content: '\F05C';
   }
   > {
@@ -162,7 +162,7 @@
     line-height: 1.4;
     color: rgba(0, 0, 0, 0.87);
   }
-  h1 .octicon-link, h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octicon-link {
+  h1 .octiconLink, h2 .octiconLink, h3 .octiconLink, h4 .octiconLink, h5 .octiconLink, h6 .octiconLink {
     color: #000;
     vertical-align: middle;
     visibility: hidden;
@@ -170,7 +170,7 @@
   h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, h5:hover .anchor, h6:hover .anchor {
     text-decoration: none;
   }
-  h1:hover .anchor .octicon-link, h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
+  h1:hover .anchor .octiconLink, h2:hover .anchor .octiconLink, h3:hover .anchor .octiconLink, h4:hover .anchor .octiconLink, h5:hover .anchor .octiconLink, h6:hover .anchor .octiconLink {
     visibility: visible;
   }
   h1 {

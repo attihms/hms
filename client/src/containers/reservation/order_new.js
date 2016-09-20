@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { reduxForm, reset, change } from 'redux-form';
-import { createOrder, fetchOrder, editOrder, clearOrder } from '../actions';
+import { createOrder, fetchOrder, editOrder, clearOrder } from '../../actions';
 
 import { Grid, Row, Col } from 'react-flexbox-grid/lib';
 
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 
 import IconButton from 'material-ui/IconButton';
@@ -17,14 +17,14 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import styles from './general.scss';
+import styles from '../general.scss';
 
 const FIELDS_USER = {
   title: {
     type: 'select',
     label: 'Title',
-    hint: 'hint hint',
-    options: [{id: 'Mr', name: 'Mr'}, {id: 'Ms', name: 'Ms'}, {id: 'Mrs', name: 'Mrs'}]
+    options: [{id: 'Mr', name: 'Mr'}, {id: 'Ms', name: 'Ms'}, {id: 'Mrs', name: 'Mrs'}],
+    hint: 'hint hint'
   },
   firstName: {
     type: 'input',
@@ -65,18 +65,27 @@ const FIELDS_ORDER = {
     hint: 'hint hint'
   },
   roomType: {
-    type: 'input',
+    type: 'select',
     label: 'Room Type',
+    options: [ 
+      {id: 'superior_double', name: 'Superior Double'},
+      {id: 'superior_twin', name: 'Superior Twin'},
+      {id: 'luxury_double', name: 'Luxury Double'},
+      {id: 'luxury_twin', name: 'Luxury Twin'},
+      {id: 'suite', name: 'Suite'}
+    ],
     hint: 'hint hint'
   },
   numberOfRoom: {
-    type: 'input',
+    type: 'select',
     label: 'Number Of Room',
+    options: [{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}, {id: 4, name: '4'}, {id: 5, name: '5'}],
     hint: 'hint hint'
   },
   numberOfPerson: {
-    type: 'input',
+    type: 'select',
     label: 'Number Of Person',
+    options: [{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}, {id: 4, name: '4'}, {id: 5, name: '5'}],
     hint: 'hint hint'
   },
   enfant: {
@@ -191,11 +200,9 @@ class OrderNew extends Component {
 
   renderBarLeftIcon() {
     return (
-      <Link to='/'>
-        <IconButton iconStyle={{color: '#fff'}}>
-          <NavigationBack/>
-        </IconButton>
-      </Link>
+      <IconButton iconStyle={{color: '#fff'}} onClick={browserHistory.goBack}>
+        <NavigationBack/>
+      </IconButton>
     )
   }
 

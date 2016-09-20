@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchOrders } from '../actions';
 
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
 
 import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
+import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import RaisedButton from 'material-ui/RaisedButton';
-import SmartTable from '../components/table/SmartTable';
+import Calendar from '../components/calendar/Calendar';
+import moment from 'moment';
 
 class OrdersList extends Component {
   constructor(props) {
@@ -22,17 +23,18 @@ class OrdersList extends Component {
   }
 
 	componentWillMount() {
-    const {
-      token,
-      fetchOrders
-    } = this.props;
-
-    if (token) {
-      fetchOrders();
-    }
+		this.props.fetchOrders();
 	}
 
   componentWillUnmount() {}
+
+  renderBarLeftIcon() {
+    return (
+      <IconButton iconStyle={{color: '#fff'}} onClick={browserHistory.goBack}>
+        <NavigationBack/>
+      </IconButton>
+    )
+  }
 
   renderBarRightIcon() {
     return (
@@ -51,41 +53,18 @@ class OrdersList extends Component {
   }
 
 	render() {
+
     let { orders } = this.props;
-    const data = orders.data;
-
-    const headerArr = [
-      {alias: 'ID', dataAlias: 'id', format: {type: 'text'}},
-      {alias: 'Name', dataAlias: 'lastName', format: {
-        type: 'linkNameFormola', url: 'reservation/', names: ['title', 'firstName', 'lastName']}
-      },
-      {alias: 'Room Type', dataAlias: 'roomType', format: {type: 'text'}},
-      {alias: 'Check In', dataAlias: 'checkIn', format: {type: 'dateTime'}},
-      {alias: 'Check Out', dataAlias: 'checkOut', format: {type: 'dateTime'}}
-    ];
-
-    const tableConf = {
-      tableHeaders: headerArr,
-      data: data,
-      offset: 0,
-      total: orders.length,
-      limit: 10,
-      onPageClick: this.goTo
-    };
 
     return (
       <div>
         <AppBar
-          title="Hotel Managment System"
-          iconElementLeft={<span></span>}
+          title="Rooms Managment"
+          iconElementLeft={this.renderBarLeftIcon()}
           iconElementRight={ this.renderBarRightIcon() }
           />
           <br />
-          <SmartTable {...tableConf}>
-            <Link to='/reservation/new'>
-              <RaisedButton label="Add New Reservation" primary={true} />
-            </Link>
-          </SmartTable>
+          <Calendar selected={moment()}/>
       </div>
     );
 
@@ -113,17 +92,7 @@ class OrdersList extends Component {
 }
 
 function mapStateToProps(state) {
-  const {
-    orders,
-    auth: {
-      token
-    }
-  } = state;
-
-  return {
-    orders: orders.all,
-    token: token
-  }
+  return { orders: state.orders.all }
 }
 
 export default connect( mapStateToProps, { fetchOrders } )(OrdersList);

@@ -1,4 +1,8 @@
-import { FETCH_ORDERS, FETCH_ORDER, CLEAR_ORDER } from '../actions';
+import { 
+	FETCH_ORDERS,
+	FETCH_ORDER,
+	CLEAR_ORDER
+} from '../actions';
 
 const INIT_STATE = {
 	all: [],

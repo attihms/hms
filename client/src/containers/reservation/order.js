@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchOrder, deleteOrder, clearOrder } from '../actions';
+import { fetchOrder, deleteOrder, clearOrder } from '../../actions';
 
 import { Grid, Row, Col } from 'react-flexbox-grid/lib';
 
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 
 import IconButton from 'material-ui/IconButton';
@@ -13,9 +13,9 @@ import FlatButton from 'material-ui/FlatButton';
 
 import TextField from 'material-ui/TextField';
 
-import formatTableCell from './../components/table/formatTableCell';
+import formatTableCell from '../../components/table/formatTableCell';
 
-import styles from './general.scss';
+import styles from '../general.scss';
 
 class OrderView extends Component {
   static contextTypes = {
@@ -39,11 +39,9 @@ class OrderView extends Component {
 
   renderBarLeftIcon() {
     return (
-      <Link to='/'>
-        <IconButton iconStyle={{color: '#fff'}}>
-          <NavigationBack/>
-        </IconButton>
-      </Link>
+      <IconButton iconStyle={{color: '#fff'}} onClick={browserHistory.goBack}>
+        <NavigationBack/>
+      </IconButton>
     )
   }
 

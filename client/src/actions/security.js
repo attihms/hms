@@ -47,8 +47,8 @@ export function login(creds) {
 
   const request = app.authenticate({
     type: 'local',
-    'email': creds.email,
-    'password': creds.password
+    email: creds.email,
+    password: creds.password
   }).then((result) => {
     return receiveLogin(result.data, result.token);
   }).catch((result) => {
