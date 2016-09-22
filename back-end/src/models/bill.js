@@ -1,10 +1,13 @@
 'use strict';
 
-import _ from 'lodash';
+const _ = require('lodash');
 const DataTypes = require('sequelize');
-import CommonModel from '../../models/common-model';
+const CommonModel = require('./common-model');
 
-module.exports = function (sequelize) {
+module.exports = function () {
+  const app = this;
+  const sequelize = app.get('sequelize');
+
   const billModel = {
     roomNumber: {
       type: DataTypes.INTEGER,

@@ -1,10 +1,8 @@
 'use strict';
 
-import globalHooks from '../../../hooks';
-import hooks from 'feathers-hooks';
-import {
-  hooks as auth
-} from 'feathers-authentication';
+const globalHooks = require('../../../hooks');
+const hooks = require('feathers-hooks');
+const auth = require('feathers-authentication').hooks;
 
 const manipulateData = (hook, next) => {
   // const { data } = hook.result;

@@ -1,14 +1,13 @@
 'use strict';
 
 const service = require('feathers-sequelize');
-const bookingAgent = require('./bookingAgent-model');
 const hooks = require('./hooks');
 
 module.exports = function(){
   const app = this;
 
   const options = {
-    Model: bookingAgent(app.get('sequelize')),
+    Model: app.get('models').room_types,
     paginate: {
       default: 5,
       max: 25
@@ -16,14 +15,14 @@ module.exports = function(){
   };
 
   // Initialize our service with any options it requires
-  app.use('/booking-agents', service(options));
+  app.use('/roomTypes', service(options));
 
   // Get our initialize service to that we can bind hooks
-  const bookingAgentService = app.service('/booking-agents');
+  const roomTypeService = app.service('/roomTypes');
 
   // Set up our before hooks
-  bookingAgentService.before(hooks.before);
+  roomTypeService.before(hooks.before);
 
   // Set up our after hooks
-  bookingAgentService.after(hooks.after);
+  roomTypeService.after(hooks.after);
 };

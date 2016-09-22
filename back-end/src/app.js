@@ -12,6 +12,7 @@ const rest = require('feathers-rest');
 const bodyParser = require('body-parser');
 
 const middleware = require('./middleware');
+const models = require('./models');
 const services = require('./services');
 
 const app = feathers();
@@ -29,6 +30,7 @@ app.use(compress())
   }))
   .configure(hooks())
   .configure(rest())
+  .configure(models)
   .configure(services)
   .configure(middleware);
 

@@ -1,7 +1,8 @@
 {
   "host": "hms-app.feathersjs.com",
   "port": 80,
-  "postgres": "DATABASE_URL",
+  "db_url": "DATABASE_URL",
+  "db_dialect": "DATABASE_DIALECT",
   "public": "../public/",
   "auth": {
     "idField": "id",

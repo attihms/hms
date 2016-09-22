@@ -1,10 +1,13 @@
 'use strict';
 
-import _ from 'lodash';
-import DataTypes from 'sequelize';
-import CommonModel from '../../models/common-model';
+const _ = require('lodash');
+const DataTypes = require('sequelize');
+const CommonModel = require('./common-model');
 
-module.exports = function (sequelize) {
+module.exports = function () {
+  const app = this;
+  const sequelize = app.get('sequelize');
+
   const reservationModel = {
     firstName: {
       type: DataTypes.STRING,

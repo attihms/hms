@@ -1,59 +1,41 @@
 'use strict';
-// TODO: all model filels should be formatted in ES6 standard.
 
-var fs = require('fs');
-var path = require('path');
-var Sequelize = require('sequelize');
-var basename = path.basename(module.filename);
-var env = process.env.NODE_ENV || 'development';
-var config = require(__dirname + '/../config/config.json')[env];
-var db = {};
+const Sequelize = require('sequelize');
 
-// Config connection, connection pool
-if (process.env.POSTGRES_HOST) {
-    var sequelize = new Sequelize(
-        process.env.POSTGRES_DATABASE,
-        process.env.POSTGRES_USER,
-        process.env.POSTGRES_PASSWORD, {
-            host: process.env.POSTGRES_HOST,
-            port: process.env.POSTGRES_PORT,
-            dialect: 'postgres',
-            pool: {
-                max: 5,
-                min: 0,
-                idle: 10000
-            },
-        }
-    );
-} else {
-    var sequelize = new Sequelize(
-        config.database,
-        config.username,
-        config.password,
-        config
-    );
-}
+const paymentMethod = require('./payment-method');
+const roomType = require('./room-type');
+const bookingAgent = require('./booking-agent');
+const reservation = require('./reservation');
+const bill = require('./bill');
+const billDetail = require('./bill-detail');
+const registration = require('./registration');
+const user = require('./user');
 
-fs.readdirSync(__dirname)
-    .filter(function (file) {
-        return (
-            file.indexOf('.') !== 0) &&
-            (file !== basename) &&
-            (file !== 'common-model.js') &&
-            (file.slice(-3) === '.js');
-    })
-    .forEach(function (file) {
-        var model = sequelize['import'](path.join(__dirname, file));
-        db[model.name] = model;
-    });
+module.exports = function () {
+  const app = this;
 
-Object.keys(db).forEach(function (modelName) {
-    if (db[modelName].associate) {
-        db[modelName].associate(db);
+  const sequelize = new Sequelize(app.get('db_url'), {
+    dialect: app.get('db_dialect'),
+    logging: true
+  });
+  app.set('sequelize', sequelize);
+
+  app.configure(user);
+  app.configure(bookingAgent);
+  app.configure(roomType);
+  app.configure(paymentMethod);
+  app.configure(reservation);
+  app.configure(bill);
+  app.configure(billDetail);
+  app.configure(registration);
+
+  app.set('models', sequelize.models);
+
+  Object.keys(sequelize.models).forEach(function (modelName) {
+    if ("associate" in sequelize.models[modelName]) {
+      sequelize.models[modelName].associate();
     }
-});
+  });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+  sequelize.sync();
+};

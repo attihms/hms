@@ -1,10 +1,13 @@
 'use strict';
 
-import _ from 'lodash';
+const _ = require('lodash');
 const DataTypes = require('sequelize');
-import CommonModel from '../../models/common-model';
+const CommonModel = require('./common-model');
 
-module.exports = function (sequelize) {
+module.exports = function () {
+  const app = this;
+  const sequelize = app.get('sequelize');
+
   const options = _.extend(
     CommonModel.options, {
       timestamps: false
@@ -14,8 +17,6 @@ module.exports = function (sequelize) {
   const roomType = sequelize.define('room_types', {
     name: DataTypes.STRING(25)
   }, options);
-
-  // roomType.sync();
 
   return roomType;
 };

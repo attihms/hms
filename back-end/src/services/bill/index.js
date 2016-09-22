@@ -1,14 +1,13 @@
 'use strict';
 
 const service = require('feathers-sequelize');
-const bill = require('./bill-model');
 const hooks = require('./hooks');
 
 module.exports = function() {
   const app = this;
 
   const options = {
-    Model: bill(app.get('sequelize')),
+    Model: app.get('models').bills,
     paginate: {
       default: 5,
       max: 25
