@@ -24,9 +24,10 @@ module.exports = function () {
   };
 
   const options = _.extend(
-    CommonModel.options, {
+    {
       paranoid: true
-    }
+    },
+    CommonModel.options
   );
 
   const bill = sequelize.define(
@@ -37,8 +38,6 @@ module.exports = function () {
     ),
     options
   );
-
-  // bill.sync();
 
   return bill;
 };

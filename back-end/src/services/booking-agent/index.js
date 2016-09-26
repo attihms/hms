@@ -7,7 +7,7 @@ module.exports = function(){
   const app = this;
 
   const options = {
-    Model: app.get('models').booking_agents,
+    Model: app.get('models').bookingAgents,
     paginate: {
       default: 5,
       max: 25
@@ -15,10 +15,10 @@ module.exports = function(){
   };
 
   // Initialize our service with any options it requires
-  app.use('/booking-agents', service(options));
+  app.use('/bookingAgents', service(options));
 
   // Get our initialize service to that we can bind hooks
-  const bookingAgentService = app.service('/booking-agents');
+  const bookingAgentService = app.service('/bookingAgents');
 
   // Set up our before hooks
   bookingAgentService.before(hooks.before);

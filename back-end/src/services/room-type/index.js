@@ -7,7 +7,7 @@ module.exports = function(){
   const app = this;
 
   const options = {
-    Model: app.get('models').room_types,
+    Model: app.get('models').roomTypes,
     paginate: {
       default: 5,
       max: 25

@@ -9,16 +9,16 @@ module.exports = function () {
   const sequelize = app.get('sequelize');
 
   const options = _.extend(
-    CommonModel.options, {
-      timestamps: false
-    }
+    {
+      timestamps: false,
+      tableName: 'payment_methods'
+    },
+    CommonModel.options
   );
 
-  const paymentMethod = sequelize.define('payment_methods', {
+  const paymentMethod = sequelize.define('paymentMethods', {
     name: DataTypes.STRING(25)
   }, options);
-
-  // paymentMethod.sync();
 
   return paymentMethod;
 };

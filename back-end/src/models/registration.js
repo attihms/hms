@@ -20,10 +20,11 @@ module.exports = function () {
   };
 
   const options = _.extend(
-    CommonModel.options, {
+    {
       timestamps: true,
       paranoid: true
-    }
+    },
+    CommonModel.options
   );
 
   const registration = sequelize.define(
@@ -35,8 +36,6 @@ module.exports = function () {
     ),
     options
   );
-
-  // registration.sync();
 
   return registration;
 };

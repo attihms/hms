@@ -50,4 +50,4 @@ module.exports = {
     underscored: true,
     freezeTableName: true
   }
-}
+};

@@ -9,12 +9,14 @@ module.exports = function () {
   const sequelize = app.get('sequelize');
 
   const options = _.extend(
-    CommonModel.options, {
-      timestamps: false
-    }
+    {
+      timestamps: false,
+      tableName: 'room_types'
+    },
+    CommonModel.options
   );
 
-  const roomType = sequelize.define('room_types', {
+  const roomType = sequelize.define('roomTypes', {
     name: DataTypes.STRING(25)
   }, options);
 

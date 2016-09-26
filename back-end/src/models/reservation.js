@@ -53,11 +53,12 @@ module.exports = function () {
   };
 
   const options = _.extend(
-    CommonModel.options, {
+    {
       timestamps: true,
       paranoid: true
-    }
-  )
+    },
+    CommonModel.options
+  );
 
   const reservation = sequelize.define(
     'reservations',
@@ -68,8 +69,6 @@ module.exports = function () {
     ),
     options
   );
-
-  // reservation.sync();
 
   return reservation;
 };

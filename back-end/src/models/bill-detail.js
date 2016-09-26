@@ -19,20 +19,19 @@ module.exports = function () {
     }
   };
 
-  const options = _.extend(
-    CommonModel.options, {
-      classMethods: {
-        associate() {
-          billDetail.belongsTo(sequelize.models.bills);
-        }
-      }
-    }
-  );
-
   const billDetail = sequelize.define(
     'bill_details',
     billDetailModel,
-    CommonModel.options
+    _.extend(
+     {
+       classMethods: {
+         associate() {
+           billDetail.belongsTo(sequelize.models.bills);
+         }
+       }
+     },
+     CommonModel.options
+   )
   );
 
   return billDetail;

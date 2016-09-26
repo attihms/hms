@@ -15,8 +15,7 @@ module.exports = function () {
   const app = this;
 
   const sequelize = new Sequelize(app.get('db_url'), {
-    dialect: app.get('db_dialect'),
-    logging: true
+    dialect: app.get('db_dialect')
   });
   app.set('sequelize', sequelize);
 
@@ -32,7 +31,7 @@ module.exports = function () {
   app.set('models', sequelize.models);
 
   Object.keys(sequelize.models).forEach(function (modelName) {
-    if ("associate" in sequelize.models[modelName]) {
+    if ('associate' in sequelize.models[modelName]) {
       sequelize.models[modelName].associate();
     }
   });

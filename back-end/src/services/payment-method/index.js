@@ -7,7 +7,7 @@ module.exports = function(){
   const app = this;
 
   const options = {
-    Model: app.get('models').payment_methods,
+    Model: app.get('models').paymentMethods,
     paginate: {
       default: 5,
       max: 25

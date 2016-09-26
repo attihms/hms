@@ -9,17 +9,17 @@ module.exports = function () {
   const sequelize = app.get('sequelize');
 
   const options = _.extend(
-    CommonModel.options, {
-      timestamps: false
-    }
+    {
+      timestamps: false,
+      tableName: 'booking_agents'
+    },
+    CommonModel.options
   );
 
-  const bookingAgent = sequelize.define('booking_agents', {
+  const bookingAgent = sequelize.define('bookingAgents', {
     name: DataTypes.STRING(25),
     website: DataTypes.STRING
   }, options);
-
-  // bookingAgent.sync();
 
   return bookingAgent;
 };
