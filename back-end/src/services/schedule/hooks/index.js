@@ -1,8 +1,18 @@
 'use strict';
 
+const _ = require('lodash');
 const globalHooks = require('../../../hooks');
 const hooks = require('feathers-hooks');
 const auth = require('feathers-authentication').hooks;
+
+const manipulateData = (hook, next) => {
+  const { data } = hook.result;
+
+  // hook.result.data = data[0];
+  // hook.result.data = _.map(data, 'roomId');
+
+  next();
+};
 
 exports.before = {
   all: [
@@ -10,20 +20,10 @@ exports.before = {
     // auth.populateUser(),
     // auth.restrictToAuthenticated()
   ],
-  find: [],
-  get: [],
-  create: [],
-  update: [],
-  patch: [],
-  remove: []
+  find: []
 };
 
 exports.after = {
   all: [],
-  find: [],
-  get: [],
-  create: [],
-  update: [],
-  patch: [],
-  remove: []
+  find: [manipulateData]
 };

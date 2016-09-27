@@ -11,6 +11,8 @@ const reservation = require('./reservation');
 const bill = require('./bill');
 const registration = require('./registration');
 
+const schedule = require('./schedule');
+
 module.exports = function () {
   const app = this;
 
@@ -24,4 +26,6 @@ module.exports = function () {
   app.configure(reservation);
   app.configure(registration);
   app.configure(bill);
+
+  app.configure(schedule);
 };
