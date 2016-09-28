@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { reduxForm, reset, change } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import { createRoom, fetchRoom, editRoom, clearRoom } from '../../actions';
 
 import _ from 'lodash';
@@ -9,10 +10,14 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Toggle from 'material-ui/Toggle';
+import {
+  Checkbox,
+  RadioButtonGroup,
+  SelectField,
+  TextField,
+  Toggle
+} from 'redux-form-material-ui'
 
 import { FIELDS_ROOM } from './room_fields';
 
@@ -33,20 +38,32 @@ class NewRoomDialog extends Component {
 
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.renderField = this.renderField.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+  // componentWillMount() {
+  //   console.log('hello');
+  //   const {
+  //     token,
+  //     fetchRoom
+  //   } = this.props;
+
+  //   if (token) {
+  //     fetchRoom(1)
+  //       .then( (res) => console.dir(res) );
+  //   }
+  // }
 
   handleOpen() {
     this.setState({open: true});
   }
 
   handleClose() {
+    this.props.reset();
     this.setState({open: false});
   }
 
   onSubmit(formProps) {
-    console.dir(formProps);
     this.props.createRoom(formProps)
         .then(() => {
           this.context.router.push('/room_management/settings');
@@ -54,90 +71,24 @@ class NewRoomDialog extends Component {
         });
   }
 
-  renderField(fieldConfig, fieldName) {
-    console.dir(fieldConfig);
-    console.dir(fieldName);
-
-    const fieldHelper = this.props.fields[fieldName];
-
-    const { fields } = this.props;
-
-    let fieldElement = null;
-
-    switch (fieldConfig.type) {
-      case 'input': 
-        fieldElement = (
-          <TextField
-            floatingLabelText={fieldConfig.label}
-            hintText={fieldConfig.hint}
-            fullWidth={true}
-            defaultValue={fieldHelper.defaultValue || ''}
-            {...fields[fieldName]}
-          />
-        )
-        break;
-      case 'select': 
-        fieldElement = (
-          <SelectField 
-            floatingLabelText={fieldConfig.label}
-            hintText={fieldConfig.hint}
-            fullWidth={true}
-            value={fieldHelper.value || fieldConfig.options[0].id}
-            {...fields[fieldName]}
-            >
-            {_.map( fieldConfig.options, (item) => {
-              return <MenuItem key={item.id} value={item.id} primaryText={item.name} />
-            })}
-          </SelectField>
-        )
-        break;
-      case 'toggle':
-        fieldElement = (
-          <Toggle
-            label={fieldHelper.value ? 'Active' : 'Inactive'}
-            defaultToggled={fieldHelper.value || false}
-            labelPosition="right"
-            style={{marginTop: 40, height: 25}}
-            {...fields[fieldName]}
-          />
-        )
-        break;
-      case 'textarea': 
-        fieldElement = ('<span>NONE</span>');
-        break;
-      default:
-        fieldElement = ('<span>NONE</span>');
-        break;
-    }
-
-    return (
-      <Col xs={12} sm={6} md={3} key={fieldName}>
-        { fieldElement }
-      </Col>
-    );
-  }
-
   render() {
 
     const editMode = false;
 
-    const { 
-      handleSubmit, createRoom,
-      fields: {
-        name, type, status, active
-      }
-    } = this.props;
+    const { handleSubmit, pristine, reset, submitting } = this.props
 
     const actions = [
       <FlatButton
         label="Cancel"
         primary={true}
         onTouchTap={this.handleClose}
+        disabled={submitting}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         onTouchTap={ handleSubmit( this.onSubmit ) }
+        disabled={pristine || submitting}
         keyboardFocused={true}
       />,
     ];
@@ -147,14 +98,34 @@ class NewRoomDialog extends Component {
         <RaisedButton label="Create New Room" onTouchTap={this.handleOpen} />
         <Dialog
           title="Room Information"
-          actions={actions}
           modal={false}
           open={this.state.open}
+          actions={actions}
           onRequestClose={this.handleClose}
         >
           <form className={ styles.markdownBody }>
             <Row>
-              {_.map( FIELDS_ROOM, this.renderField )}
+              <Col xs={12} sm={6} md={3}>
+                <Field name="name" component={TextField} floatingLabelText="Room Name" fullWidth={true}/>
+              </Col>
+              <Col xs={12} sm={6} md={3}>
+                <Field name="type" component={SelectField} floatingLabelText="Room Type" fullWidth={true}>
+                  {_.map( FIELDS_ROOM.type.options, (val, key) => (
+                    <MenuItem value={val.id} primaryText={val.name} key={key}/>
+                  ))}
+                </Field>
+              </Col>
+              <Col xs={12} sm={6} md={3}>
+                <Field name="status" component={SelectField} floatingLabelText="Room Status" fullWidth={true}>
+                  {_.map( FIELDS_ROOM.status.options, (val, key) => (
+                    <MenuItem value={val.id} primaryText={val.name} key={key}/>
+                  ))}
+                </Field>
+              </Col>
+              <Col xs={12} sm={6} md={3}>
+                <Field name="active" component={Toggle} label="Room Active" labelPosition="right"
+                  style={{marginTop: 40, height: 25}}/>
+              </Col>
             </Row>
           </form>
         </Dialog>
@@ -168,7 +139,7 @@ function validate(values) {
 
   _.each(FIELDS_ROOM, (type, field) => {
     if(!values[field]){
-      errors[field] = `Enter a ${field}`;
+      errors[field] = `Please enter a ${field}`;
     }
   })
 
@@ -182,8 +153,14 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
+NewRoomDialog = reduxForm({
   form: 'RoomNewForm',
-  fields: _.concat([], _.keys(FIELDS_ROOM)),
   validate
-}, mapStateToProps, { createRoom, fetchRoom, editRoom, clearRoom })(NewRoomDialog);
+})(NewRoomDialog)
+
+NewRoomDialog = connect(
+  mapStateToProps,
+  { createRoom, fetchRoom, editRoom, clearRoom }
+)(NewRoomDialog)
+
+export default NewRoomDialog

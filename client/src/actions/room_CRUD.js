@@ -32,7 +32,6 @@ export function fetchRoom(id) {
 }
 
 export function createRoom(props) {
-  console.log('create room action')
   getToken();
   const request = axios.post(`${ROOT_URL}/${END_POINT}${API_KEY}`, props);
 

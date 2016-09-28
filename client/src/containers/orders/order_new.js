@@ -198,7 +198,6 @@ function validate(values) {
 }
 
 function mapStateToProps(state) {
-  console.log(state.orders.order);
   return {
     initialValues: state.orders.order,
     token: state.auth.token

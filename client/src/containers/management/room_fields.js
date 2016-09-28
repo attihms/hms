@@ -1,9 +1,9 @@
 export const FIELDS_ROOM = {
-  // name: {
-  //   type: 'input',
-  //   label: 'Room Name',
-  //   hint: 'example: 202'
-  // },
+  name: {
+    type: 'input',
+    label: 'Room Name',
+    hint: 'example: 202'
+  },
   type: {
     type: 'select',
     label: 'Room Type',
