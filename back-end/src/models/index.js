@@ -2,14 +2,16 @@
 
 const Sequelize = require('sequelize');
 
-const paymentMethod = require('./payment-method');
-const roomType = require('./room-type');
-const bookingAgent = require('./booking-agent');
+const user = require('./user');
+const registration = require('./registration');
+
 const reservation = require('./reservation');
+const room = require('./room');
+const roomType = require('./room-type');
+const paymentMethod = require('./payment-method');
+const bookingAgent = require('./booking-agent');
 const bill = require('./bill');
 const billDetail = require('./bill-detail');
-const registration = require('./registration');
-const user = require('./user');
 
 module.exports = function () {
   const app = this;
@@ -20,13 +22,14 @@ module.exports = function () {
   app.set('sequelize', sequelize);
 
   app.configure(user);
-  app.configure(bookingAgent);
+  app.configure(registration);
+  app.configure(reservation);
+  app.configure(room);
   app.configure(roomType);
   app.configure(paymentMethod);
-  app.configure(reservation);
+  app.configure(bookingAgent);
   app.configure(bill);
   app.configure(billDetail);
-  app.configure(registration);
 
   app.set('models', sequelize.models);
 
