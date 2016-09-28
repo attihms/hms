@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchOrders } from '../actions';
+import { fetchOrders } from '../../actions';
 
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
 
 import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
-import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import Calendar from '../components/calendar/Calendar';
-import moment from 'moment';
+import RaisedButton from 'material-ui/RaisedButton';
+import SmartTable from '../../components/table/SmartTable';
 
 class OrdersList extends Component {
+
   constructor(props) {
     super(props);
 
@@ -23,18 +23,17 @@ class OrdersList extends Component {
   }
 
 	componentWillMount() {
-		this.props.fetchOrders();
+    const {
+      token,
+      fetchOrders
+    } = this.props;
+
+    if (token) {
+      fetchOrders();
+    }
 	}
 
   componentWillUnmount() {}
-
-  renderBarLeftIcon() {
-    return (
-      <IconButton iconStyle={{color: '#fff'}} onClick={browserHistory.goBack}>
-        <NavigationBack/>
-      </IconButton>
-    )
-  }
 
   renderBarRightIcon() {
     return (
@@ -53,18 +52,48 @@ class OrdersList extends Component {
   }
 
 	render() {
-
     let { orders } = this.props;
+
+    const headerArr = [
+      {alias: 'ID', dataAlias: 'id', format: {type: 'text'}},
+      {alias: 'Name', dataAlias: 'lastName', format: {
+        type: 'linkNameFormola', url: '/reservations/', names: ['title', 'firstName', 'lastName']}
+      },
+      {alias: 'Room Type', dataAlias: 'roomType', format: {type: 'text'}},
+      {alias: 'Check In', dataAlias: 'checkIn', format: {type: 'dateTime'}},
+      {alias: 'Check Out', dataAlias: 'checkOut', format: {type: 'dateTime'}}
+    ];
+
+    const tableConf = {
+      tableHeaders: headerArr,
+      data: orders.data,
+      offset: 0,
+      total: orders.total,
+      limit: 10,
+      onPageClick: this.goTo,
+      config: {
+        selectable: false,
+        displaySelectAll: false,
+        adjustForCheckbox: false,
+        displayRowCheckbox: false,
+        showRowHover: false,
+        stripedRows: false
+      }
+    };
 
     return (
       <div>
         <AppBar
-          title="Rooms Managment"
-          iconElementLeft={this.renderBarLeftIcon()}
+          title="Reservations Overview"
+          iconElementLeft={<span></span>}
           iconElementRight={ this.renderBarRightIcon() }
-          />
-          <br />
-          <Calendar selected={moment()}/>
+        />
+        <br />
+        <SmartTable {...tableConf}>
+          <Link to='/reservations/new'>
+            <RaisedButton label="Add New Reservation" primary={true} />
+          </Link>
+        </SmartTable>
       </div>
     );
 
@@ -92,7 +121,10 @@ class OrdersList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { orders: state.orders.all }
+  return {
+    orders: state.orders.all,
+    token: state.auth.token
+  }
 }
 
 export default connect( mapStateToProps, { fetchOrders } )(OrdersList);

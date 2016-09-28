@@ -1,11 +1,11 @@
-import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { reduxForm, reset, change } from 'redux-form';
 import { createOrder, fetchOrder, editOrder, clearOrder } from '../../actions';
 
-import { Grid, Row, Col } from 'react-flexbox-grid/lib';
+import _ from 'lodash';
+import { Row, Col } from 'react-flexbox-grid/lib';
 
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 
 import IconButton from 'material-ui/IconButton';
@@ -17,96 +17,9 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import { FIELDS_USER, FIELDS_ORDER, FIELDS_BILL } from './order_fields';
+
 import styles from '../general.scss';
-
-const FIELDS_USER = {
-  title: {
-    type: 'select',
-    label: 'Title',
-    options: [{id: 'Mr', name: 'Mr'}, {id: 'Ms', name: 'Ms'}, {id: 'Mrs', name: 'Mrs'}],
-    hint: 'hint hint'
-  },
-  firstName: {
-    type: 'input',
-    label: 'First Name',
-    hint: 'hint hint'
-  },
-  lastName: {
-    type: 'input',
-    label: 'Last Name',
-    hint: 'hint hint'
-  },
-  middleName: {
-    type: 'input',
-    label: 'Middle Name',
-    hint: 'hint hint'
-  },
-  nationality: {
-    type: 'input',
-    label: 'Nationality',
-    hint: 'hint hint'
-  }
-};
-
-const FIELDS_ORDER = {
-  checkIn: {
-    type: 'input',
-    label: 'Check In Date',
-    hint: 'hint hint'
-  },
-  checkOut: {
-    type: 'input',
-    label: 'Check Out Date',
-    hint: 'hint hint'
-  },
-  bookingSource: {
-    type: 'input',
-    label: 'Booking Source',
-    hint: 'hint hint'
-  },
-  roomType: {
-    type: 'select',
-    label: 'Room Type',
-    options: [ 
-      {id: 'superior_double', name: 'Superior Double'},
-      {id: 'superior_twin', name: 'Superior Twin'},
-      {id: 'luxury_double', name: 'Luxury Double'},
-      {id: 'luxury_twin', name: 'Luxury Twin'},
-      {id: 'suite', name: 'Suite'}
-    ],
-    hint: 'hint hint'
-  },
-  numberOfRoom: {
-    type: 'select',
-    label: 'Number Of Room',
-    options: [{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}, {id: 4, name: '4'}, {id: 5, name: '5'}],
-    hint: 'hint hint'
-  },
-  numberOfPerson: {
-    type: 'select',
-    label: 'Number Of Person',
-    options: [{id: 1, name: '1'}, {id: 2, name: '2'}, {id: 3, name: '3'}, {id: 4, name: '4'}, {id: 5, name: '5'}],
-    hint: 'hint hint'
-  },
-  enfant: {
-    type: 'input',
-    label: 'Enfant',
-    hint: 'hint hint'
-  }
-};
-
-const FIELDS_BILL = {
-  price: {
-    type: 'input',
-    label: 'Final Price',
-    hint: 'hint hint'
-  },
-  paymentMethod: {
-    type: 'input',
-    label: 'Payment Method',
-    hint: 'hint hint'
-  }
-};
 
 class OrderNew extends Component {
 
@@ -118,11 +31,20 @@ class OrderNew extends Component {
     super(props);
 
     this.state = { loading: this.props.params.id ? true : false };
+
+    // this.renderField = this.renderField.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
-    if (this.props.params.id) {
-      this.props.fetchOrder(this.props.params.id)
+    const {
+      token,
+      fetchOrder,
+      params
+    } = this.props;
+
+    if (token && params.id) {
+      fetchOrder(params.id)
         .then( () => this.setState({ loading: false }) );
     }
   }
@@ -232,32 +154,30 @@ class OrderNew extends Component {
         <AppBar 
           title={orderBarTitle} 
           iconElementLeft={this.renderBarLeftIcon()}
-          />
-        <Grid>
-          <form className={ styles.markdownBody } style={{padding: '50px 20px'}}
-                onSubmit={ handleSubmit( this.onSubmit.bind(this) ) }>
+        />
+        <form className={ styles.markdownBody } style={{padding: '50px 20px'}}
+              onSubmit={ handleSubmit( this.onSubmit.bind(this) ) }>
 
-            <h2>User Information</h2>
-            <Row>
-              {_.map( FIELDS_USER, this.renderField.bind(this) )}
-            </Row>
-            <br />
+          <h2>User Information</h2>
+          <Row>
+            {_.map( FIELDS_USER, this.renderField.bind(this) )}
+          </Row>
+          <br />
 
-            <h2>Order Information</h2>
-            <Row>
-              {_.map( FIELDS_ORDER, this.renderField.bind(this) )}
-            </Row>
-            <br />
+          <h2>Order Information</h2>
+          <Row>
+            {_.map( FIELDS_ORDER, this.renderField.bind(this) )}
+          </Row>
+          <br />
 
-            <h2>Payment Bill</h2>
-            <Row>
-              {_.map( FIELDS_BILL, this.renderField.bind(this) )}
-            </Row>
+          <h2>Payment Bill</h2>
+          <Row>
+            {_.map( FIELDS_BILL, this.renderField.bind(this) )}
+          </Row>
 
-            <br />
-            <RaisedButton primary={true}  type='submit' label={ editMode ? 'Save Changes' : 'Create New' }/>
-          </form>
-        </Grid>
+          <br />
+          <RaisedButton primary={true}  type='submit' label={ editMode ? 'Save Changes' : 'Create New' }/>
+        </form>
       </div>
 		);
 	}
@@ -278,8 +198,11 @@ function validate(values) {
 }
 
 function mapStateToProps(state) {
-  // return null;
-  return { initialValues: state.orders.order }
+  console.log(state.orders.order);
+  return {
+    initialValues: state.orders.order,
+    token: state.auth.token
+  }
 }
 
 // connect: 1st arg is mapStateToProps, 2nd is mapDispatchToProps

@@ -9,7 +9,8 @@ import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 // import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import SmartTableRow from './SmartTableRow';
+// import SmartTableRow from './SmartTableRow';
+import formatTableCell from './formatTableCell';
 
 import _ from 'lodash';
 
@@ -91,24 +92,26 @@ class SmartTable extends Component {
   }
 
   render() {
-    const { limit, total, tableHeaders } = this.props;
+    const { limit, total, tableHeaders, config, onRowSelection } = this.props;
     let { paginatedData, offset } = this.state;
 
     if(!paginatedData.length) {
       return <div>Loading...</div>
     }
 
+    // <SmartTableRow key={index} {...{ row, index, tableHeaders }} />
+
     return (
-      <Table className={ styles.table } selectable={false}>
-        <TableHeader displaySelectAll ={false} adjustForCheckbox={false}>
+      <Table className={ styles.table } selectable={ config.selectable } onRowSelection={ onRowSelection }>
+        <TableHeader displaySelectAll={ config.displaySelectAll } adjustForCheckbox={ config.adjustForCheckbox }>
           <TableRow>
-            <TableHeaderColumn colSpan={tableHeaders.length}>
+            <TableHeaderColumn colSpan={ tableHeaders.length }>
               { this.props.children }
             </TableHeaderColumn>
           </TableRow>
           <TableRow>
             {!!tableHeaders && tableHeaders.map((header, index) => (
-              <TableHeaderColumn key={index}>
+              <TableHeaderColumn key={ index }>
                 <div className={ styles.rowAlign }>
                   {header.alias}
                   <SortIcon
@@ -121,9 +124,19 @@ class SmartTable extends Component {
             ))}
           </TableRow>
         </TableHeader>
-        <TableBody showRowHover stripedRows displayRowCheckbox={false}>
-          {paginatedData.map((row, index) => (
-            <SmartTableRow key={index} {...{ row, index, tableHeaders }} />
+        <TableBody 
+          showRowHover={ config.showRowHover } 
+          stripedRows={ config.stripedRows } 
+          displayRowCheckbox={ config.displayRowCheckbox }
+        >
+          { paginatedData.map((row, index) => (
+              <TableRow key={index}>
+                {tableHeaders.map((header, propIndex) => (
+                  <TableRowColumn key={propIndex}>
+                    {formatTableCell(row[header.dataAlias], header.format, row)}
+                  </TableRowColumn>
+                ))}
+              </TableRow>
           ))}
         </TableBody>
         <TableFooter>
@@ -152,7 +165,8 @@ SmartTable.propTypes = {
   offset: PropTypes.number, // current offset
   total: PropTypes.number, // total number of rows
   limit: PropTypes.number, // num of rows in each page
-  onPageClick: PropTypes.func // what to do after clicking page number
+  onPageClick: PropTypes.func, // what to do after clicking page number
+  config: PropTypes.object
 };
 
 export default SmartTable;

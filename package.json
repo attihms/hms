@@ -1,0 +1,25 @@
+{
+  "name": "hms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently --kill-others 'npm run be' 'npm run fe'",
+    "fe": "cd client && npm start",
+    "be": "cd back-end && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/attihms/hms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/attihms/hms/issues"
+  },
+  "homepage": "https://github.com/attihms/hms#readme",
+  "devDependencies": {
+    "concurrently": "^2.2.0"
+  }
+}

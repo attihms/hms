@@ -45,7 +45,7 @@ class Login extends Component {
 
     this.props.login(creds)
       .then(res => {
-        browserHistory.replace("/reservations");
+        browserHistory.replace("/reservations/overview");
       });
   }
 

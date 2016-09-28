@@ -1,21 +1,21 @@
 import { 
-	FETCH_ORDERS,
-	FETCH_ORDER,
-	CLEAR_ORDER
+	FETCH_ROOMS,
+	FETCH_ROOM,
+	CLEAR_ROOM
 } from '../actions';
 
 const INIT_STATE = {
 	all: [],
-	order: null
+	room: null
 };
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_ORDER]: (state, action) => ({ ...state, order: action.payload.data }),
-  [FETCH_ORDERS]: (state, action) => ({ ...state, all: action.payload.data }),
-  [CLEAR_ORDER]: (state, action) => ({ ...state, order: null })
+  [FETCH_ROOM]: (state, action) => ({ ...state, room: action.payload.data }),
+  [FETCH_ROOMS]: (state, action) => ({ ...state, all: action.payload.data }),
+  [CLEAR_ROOM]: (state, action) => ({ ...state, room: null })
 };
 
 // ------------------------------------

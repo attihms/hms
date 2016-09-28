@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   ROOT_URL, API_KEY,
-  FETCH_ORDERS, CREATE_ORDER, FETCH_ORDER, DELETE_ORDER, EDIT_ORDER, CLEAR_ORDER
+  FETCH_ROOMS, CREATE_ROOM, FETCH_ROOM, DELETE_ROOM, EDIT_ROOM, CLEAR_ROOM
 } from './';
 
 function getToken() {
@@ -9,60 +9,61 @@ function getToken() {
   axios.defaults.headers.common['Authorization'] = token;
 }
 
-const END_POINT = 'reservations';
+const END_POINT = 'rooms';
 
-export function fetchOrders() {
+export function fetchRooms() {
   getToken();
   const request = axios.get(`${ROOT_URL}/${END_POINT}${API_KEY}`);
 
   return {
-    type: FETCH_ORDERS,
+    type: FETCH_ROOMS,
     payload: request
   }
 }
 
-export function fetchOrder(id) {
+export function fetchRoom(id) {
   getToken();
   const request = axios.get(`${ROOT_URL}/${END_POINT}/${id}${API_KEY}`);
 
   return {
-    type: FETCH_ORDER,
+    type: FETCH_ROOM,
     payload: request
   }
 }
 
-export function createOrder(props) {
+export function createRoom(props) {
+  console.log('create room action')
   getToken();
   const request = axios.post(`${ROOT_URL}/${END_POINT}${API_KEY}`, props);
 
   return {
-    type: CREATE_ORDER,
+    type: CREATE_ROOM,
     payload: request
   }
 }
 
-export function editOrder(id, props) {
+export function editRoom(id, props) {
   getToken();
   const request = axios.put(`${ROOT_URL}/${END_POINT}/${id}${API_KEY}`, props);
 
   return {
-    type: EDIT_ORDER,
+    type: EDIT_ROOM,
     payload: request
   }
 }
 
-export function deleteOrder(id) {
+export function deleteRoom(id) {
   getToken();
   const request = axios.delete(`${ROOT_URL}/${END_POINT}/${id}${API_KEY}`);
 
   return {
-    type: DELETE_ORDER,
+    type: DELETE_ROOM,
     payload: request
   }
 }
 
-export function clearOrder(id) {
+export function clearRoom(id) {
   return {
-    type: CLEAR_ORDER
+    type: CLEAR_ROOM
   }
 }

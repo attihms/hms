@@ -12,6 +12,7 @@ const INIT_STATE = {
   isAuthenticated: localToken ? true : false,
   token: localToken
 };
+
 // ------------------------------------
 // Action Handlers
 // ------------------------------------

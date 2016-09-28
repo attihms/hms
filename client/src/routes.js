@@ -9,11 +9,12 @@ import Login from './containers/security/login';
 
 import EnsureLoggedInContainer from './containers/security/ensure_logged_in_container'
 //reservation
-import OrdersList from './containers/reservation/orders_list';
-import OrderNew from './containers/reservation/order_new';
-import Order from './containers/reservation/order';
+import OrdersList from './containers/orders/orders_list';
+import OrderNew from './containers/orders/order_new';
+import Order from './containers/orders/order';
 //room management
-import Schedule from './containers/schedule';
+import Schedule from './containers/management/schedule';
+import Settings from './containers/management/settings';
 
 export default (
   <Route path='/' component={ App }>
@@ -21,11 +22,19 @@ export default (
     <Route path='login' component={ Login } />
     <Route path='signup' component={ Signup } />
     <Route component={ EnsureLoggedInContainer }>
-      <Route path='reservations' component={ OrdersList } />
-      <Route path='reservation/new' component={ OrderNew } />
-      <Route path='reservation/edit/:id' component={ OrderNew } />
-      <Route path='reservation/:id' component={ Order } />
-      <Route path='schedule' component={ Schedule } />
+
+      <Route path='reservations/'>
+        <Route path='overview' component={ OrdersList } />
+        <Route path='new' component={ OrderNew } />
+        <Route path='edit/:id' component={ OrderNew } />
+        <Route path=':id' component={ Order } />
+      </Route>
+
+      <Route path='room_management/'>
+        <Route path='schedule' component={ Schedule } />
+        <Route path='settings' component={ Settings } />
+      </Route>
+
     </Route>
     <Redirect from='*' to='/' />
   </Route>

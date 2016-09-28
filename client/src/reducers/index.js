@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux';
-import Auth from './reducer_security';
-import OrdertReducer from './reducer_orders';
 import { reducer as formReducer } from 'redux-form';
+
+import Auth from './reducer_security';
+import OrderReducer from './reducer_orders';
+import RoomReducer from './reducer_rooms';
 
 const rootReducer = combineReducers({
     auth: Auth,
-    orders: OrdertReducer,
-    form: formReducer
+    form: formReducer,
+    orders: OrderReducer,
+    rooms: RoomReducer,
 });
 
 export default rootReducer;

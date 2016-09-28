@@ -8,6 +8,7 @@ const roomType = require('./room-type');
 const bookingAgent = require('./booking-agent');
 
 const reservation = require('./reservation');
+const room = require('./room');
 const bill = require('./bill');
 const registration = require('./registration');
 
@@ -24,6 +25,7 @@ module.exports = function () {
   app.configure(bookingAgent);
 
   app.configure(reservation);
+  app.configure(room);
   app.configure(registration);
   app.configure(bill);
 
