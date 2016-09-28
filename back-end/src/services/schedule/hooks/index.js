@@ -6,7 +6,7 @@ const hooks = require('feathers-hooks');
 const auth = require('feathers-authentication').hooks;
 
 const manipulateData = (hook, next) => {
-  const { data } = hook.result;
+  const data = hook.result.data;
 
   // hook.result.data = data[0];
   // hook.result.data = _.map(data, 'roomId');

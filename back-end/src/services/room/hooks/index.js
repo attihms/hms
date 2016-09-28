@@ -1,17 +1,8 @@
 'use strict';
 
-import globalHooks from '../../../hooks';
-import hooks from 'feathers-hooks';
-import {
-  hooks as auth
-} from 'feathers-authentication';
-
-const manipulateData = (hook, next) => {
-  // const { data } = hook.result;
-  // hook.result.data = data[0];
-
-  next();
-};
+const globalHooks = require('../../../hooks');
+const hooks = require('feathers-hooks');
+const auth = require('feathers-authentication').hooks;
 
 exports.before = {
   all: [
@@ -29,7 +20,7 @@ exports.before = {
 
 exports.after = {
   all: [],
-  find: [manipulateData],
+  find: [],
   get: [],
   create: [],
   update: [],
