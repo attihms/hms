@@ -57,7 +57,7 @@ class OrderView extends Component {
     return (
       <div style={{marginTop: '5px'}}>
         <FlatButton label="Delete" onClick={this.onDeleteClick.bind(this)} style={{color: '#fff'}}/>
-        <Link to={`/reservations/edit/${editId}`}>
+        <Link to={`/reservations/${editId}/edit`}>
           <FlatButton label="Edit" style={{color: '#fff'}}/>
         </Link>
       </div>

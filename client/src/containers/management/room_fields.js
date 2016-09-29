@@ -23,7 +23,7 @@ export const FIELDS_ROOM = {
     hint: 'hint hint'
   },
   active: {
-    type: 'toggle',
+    type: 'toggle-active',
     label: 'Active',
     options: [{id: true, name: 'Active'}, {id: false, name: 'Inactive'}],
     hint: 'hint hint'

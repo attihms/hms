@@ -26,8 +26,7 @@ export default (
       <Route path='reservations/'>
         <Route path='overview' component={ OrdersList } />
         <Route path='new' component={ OrderNew } />
-        <Route path='edit/:id' component={ OrderNew } />
-        <Route path=':id' component={ Order } />
+        <Route path=':id' component={ OrderNew } />
       </Route>
 
       <Route path='room_management/'>

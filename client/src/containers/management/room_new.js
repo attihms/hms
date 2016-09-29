@@ -38,6 +38,7 @@ class NewRoomDialog extends Component {
 
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.renderField = this.renderField.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -69,6 +70,76 @@ class NewRoomDialog extends Component {
           this.context.router.push('/room_management/settings');
           this.handleClose();
         });
+  }
+
+  renderField(fieldConfig, field)  { // val, key
+    let fieldElement = '';
+
+    switch (fieldConfig.type) {
+      case 'input': 
+        //defaultValue={fieldHelper.defaultValue || ''}
+        fieldElement = (
+          <Field
+            name={field}
+            component={TextField}
+            hintText={fieldConfig.hint || null}
+            floatingLabelText={fieldConfig.label}
+            fullWidth={true}
+          />
+        )
+        break;
+      case 'select': 
+        fieldElement = (
+          // value={fieldHelper.value}
+          <Field
+            name={field}
+            component={SelectField}
+            floatingLabelText={fieldConfig.label}
+            fullWidth={true}
+          >
+            {_.map( fieldConfig.options, (item) => {
+              return <MenuItem key={item.id} value={item.id} primaryText={item.name} />
+            })}
+          </Field>
+        )
+        break;
+      case 'textarea': 
+        fieldElement = ('<span>Text Area</span>');
+        break;
+      case 'toogle':
+        fieldElement = (
+          <Field
+            name={field}
+            component={Toggle}
+            hintText={fieldConfig.hint || null}
+            labelPosition="right"
+            label={fieldConfig.label}
+          />
+        )
+        break;
+      case 'toggle-active':
+        // TODO: need to make label dynamic
+        fieldElement = (
+          <Field
+            name={field}
+            component={Toggle}
+            hintText={fieldConfig.hint || null}
+            labelPosition="right"
+            label={this.props[field] ? 'Active' : 'Inactive'}
+            style={{marginTop: 40, height: 25}}
+          />
+        )
+        break;
+      default:
+        fieldElement = ('<span>NONE</span>');
+        break;
+    }
+
+    return (
+      <Col xs={12} sm={6} md={3} key={field}>
+        { fieldElement }
+      </Col>
+    );
   }
 
   render() {
@@ -105,27 +176,7 @@ class NewRoomDialog extends Component {
         >
           <form className={ styles.markdownBody }>
             <Row>
-              <Col xs={12} sm={6} md={3}>
-                <Field name="name" component={TextField} floatingLabelText="Room Name" fullWidth={true}/>
-              </Col>
-              <Col xs={12} sm={6} md={3}>
-                <Field name="type" component={SelectField} floatingLabelText="Room Type" fullWidth={true}>
-                  {_.map( FIELDS_ROOM.type.options, (val, key) => (
-                    <MenuItem value={val.id} primaryText={val.name} key={key}/>
-                  ))}
-                </Field>
-              </Col>
-              <Col xs={12} sm={6} md={3}>
-                <Field name="status" component={SelectField} floatingLabelText="Room Status" fullWidth={true}>
-                  {_.map( FIELDS_ROOM.status.options, (val, key) => (
-                    <MenuItem value={val.id} primaryText={val.name} key={key}/>
-                  ))}
-                </Field>
-              </Col>
-              <Col xs={12} sm={6} md={3}>
-                <Field name="active" component={Toggle} label="Room Active" labelPosition="right"
-                  style={{marginTop: 40, height: 25}}/>
-              </Col>
+              {_.map( FIELDS_ROOM, this.renderField )}
             </Row>
           </form>
         </Dialog>

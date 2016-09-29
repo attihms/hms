@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { reduxForm, reset, change } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import { createOrder, fetchOrder, editOrder, clearOrder } from '../../actions';
 
 import _ from 'lodash';
@@ -13,9 +14,16 @@ import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import {
+  Checkbox,
+  RadioButtonGroup,
+  SelectField,
+  TextField,
+  Toggle
+} from 'redux-form-material-ui'
+
+import formatTableCell from '../../components/table/formatTableCell';
 
 import { FIELDS_USER, FIELDS_ORDER, FIELDS_BILL } from './order_fields';
 
@@ -30,10 +38,13 @@ class OrderNew extends Component {
   constructor(props){
     super(props);
 
-    this.state = { loading: this.props.params.id ? true : false };
+    this.state = { 
+      loading: this.props.params.id ? true : false,
+      order: null
+    };
 
-    // this.renderField = this.renderField.bind(this);
-    // this.onSubmit = this.onSubmit.bind(this);
+    this.renderField = this.renderField.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -45,7 +56,10 @@ class OrderNew extends Component {
 
     if (token && params.id) {
       fetchOrder(params.id)
-        .then( () => this.setState({ loading: false }) );
+        .then(res => this.setState({
+          loading: false,
+          order: res.payload.data
+        }));
     }
   }
 
@@ -68,41 +82,34 @@ class OrderNew extends Component {
   }
 
   renderField(fieldConfig, field)  { // val, key
-    const fieldHelper = this.props.fields[field];
-
-    /*<div className={`form-group ${ fieldHelper.touched && fieldHelper.invalid ? 'has-error' : ''}`} key={field} >
-      <label>{fieldConfig.label}</label>
-      <fieldConfig.type type='text' className='form-control' {...fieldHelper} />
-      <div className='help-block'>
-        { fieldHelper.touched ? fieldHelper.error : '' }
-      </div>
-    </div>*/
-
     let fieldElement = '';
 
     switch (fieldConfig.type) {
       case 'input': 
+        //defaultValue={fieldHelper.defaultValue || ''}
         fieldElement = (
-          <TextField
-            floatingLabelText={fieldConfig.label}
+          <Field
+            name={field}
+            component={TextField}
             hintText={fieldConfig.hint}
+            floatingLabelText={fieldConfig.label}
             fullWidth={true}
-            defaultValue={fieldHelper.defaultValue || ''}
           />
         )
         break;
       case 'select': 
         fieldElement = (
-          <SelectField 
+          // value={fieldHelper.value}
+          <Field
+            name={field}
+            component={SelectField}
             floatingLabelText={fieldConfig.label}
-            hintText={fieldConfig.hint}
             fullWidth={true}
-            value={fieldHelper.value}
-            >
+          >
             {_.map( fieldConfig.options, (item) => {
               return <MenuItem key={item.id} value={item.id} primaryText={item.name} />
             })}
-          </SelectField>
+          </Field>
         )
         break;
       case 'textarea': 
@@ -131,9 +138,17 @@ class OrderNew extends Component {
   renderBarRightIcon(editId) {
     return (
       <div style={{marginTop: '5px'}}>
+        <FlatButton label="Delete" onClick={this.onDeleteClick.bind(this)} style={{color: '#fff'}}/>
         <FlatButton label="Save" style={{color: '#fff'}}/>
       </div>
     )
+  }
+
+  onDeleteClick() {
+    this.props.deleteOrder(this.props.params.id)
+      .then( () => {
+        this.context.router.push('/reservations/overview');
+      })
   }
 
 	render() {
@@ -144,35 +159,47 @@ class OrderNew extends Component {
 
     const editMode = this.props.params.id ? true : false;
     
-    let { handleSubmit } = this.props;
-    const { createOrder } = this.props;
+    const { handleSubmit, pristine, reset, submitting } = this.props;
 
-    let orderBarTitle = editMode ? `Reservation #${this.props.params.id}` : `New Reservation`;
+    const { order } = this.state;
+
+    const orderBarTitle = editMode ? `Reservation #${this.props.params.id}` : `New Reservation`;
 
 		return (
       <div>
         <AppBar 
           title={orderBarTitle} 
           iconElementLeft={this.renderBarLeftIcon()}
+          iconElementRight={this.renderBarRightIcon(this.props.params.id)}
         />
         <form className={ styles.markdownBody } style={{padding: '50px 20px'}}
-              onSubmit={ handleSubmit( this.onSubmit.bind(this) ) }>
+              onSubmit={ handleSubmit( this.onSubmit ) }>
+
+          { editMode && order && order.updated_at ? <Row>
+            <Col xs={12}>
+              <Row end="xs">
+                <Col xs={6}>
+                  <i><b>Last Updated At:</b> { formatTableCell(order.updated_at, {type: 'dateTime'}) }</i>
+                </Col>
+              </Row>
+            </Col>
+          </Row> : '' }
 
           <h2>User Information</h2>
           <Row>
-            {_.map( FIELDS_USER, this.renderField.bind(this) )}
+            {_.map( FIELDS_USER, this.renderField )}
           </Row>
           <br />
 
           <h2>Order Information</h2>
           <Row>
-            {_.map( FIELDS_ORDER, this.renderField.bind(this) )}
+            {_.map( FIELDS_ORDER, this.renderField )}
           </Row>
           <br />
 
           <h2>Payment Bill</h2>
           <Row>
-            {_.map( FIELDS_BILL, this.renderField.bind(this) )}
+            {_.map( FIELDS_BILL, this.renderField )}
           </Row>
 
           <br />
@@ -190,7 +217,7 @@ function validate(values) {
 
   _.each(totalFields, (type, field) => {
     if(!values[field]){
-      errors[field] = `Enter a ${field}`;
+      errors[field] = `Please enter a ${field}`;
     }
   })
 
@@ -204,10 +231,14 @@ function mapStateToProps(state) {
   }
 }
 
-// connect: 1st arg is mapStateToProps, 2nd is mapDispatchToProps
-// reduxForm: 1st is form config, 2nd is mapStateToProps, 3rd is mapDispatchToProps
-export default reduxForm({
+OrderNew = reduxForm({
   form: 'OrderNewForm',
-  fields: _.concat([], _.keys(FIELDS_USER), _.keys(FIELDS_ORDER), _.keys(FIELDS_BILL)),
   validate
-}, mapStateToProps, { createOrder, fetchOrder, editOrder, clearOrder })(OrderNew);
+})(OrderNew)
+
+OrderNew = connect(
+  mapStateToProps,
+  { createOrder, fetchOrder, editOrder, clearOrder }
+)(OrderNew)
+
+export default OrderNew
