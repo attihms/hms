@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchOrders } from '../../actions';
+import { fetchRooms } from '../../actions';
 
 import { Link, browserHistory } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
@@ -12,7 +12,7 @@ import IconButton from 'material-ui/IconButton/IconButton';
 import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import Calendar from '../../components/calendar/Calendar';
+import Calendar from '../../components/calendar-week/Calendar';
 import moment from 'moment';
 
 class Schedule extends Component {
@@ -23,7 +23,7 @@ class Schedule extends Component {
   }
 
 	componentWillMount() {
-		this.props.fetchOrders();
+		this.props.fetchRooms();
 	}
 
   componentWillUnmount() {}
@@ -54,7 +54,7 @@ class Schedule extends Component {
 
 	render() {
 
-    let { orders } = this.props;
+    let { rooms } = this.props;
 
     return (
       <div>
@@ -63,36 +63,20 @@ class Schedule extends Component {
           iconElementLeft={this.renderBarLeftIcon()}
           iconElementRight={ this.renderBarRightIcon() }
         />
-          <br />
-          <Calendar selected={moment()}/>
+        <div style={{padding: 20}}>
+          <Calendar selected={moment()} rooms={rooms}/>
+        </div>
       </div>
     );
-
-  //   let tableConfig = {
-  //     height: 'calc(100vh - 200px)',
-  //     fixedHeader: true,
-  //     fixedFooter: true,
-  //     selectable: true,
-  //     multiSelectable: false
-  //   }
-
-  //   let headerConfig = {
-  //     displaySelectAll: false,
-  //     adjustForCheckbox: false,
-  //     enableSelectAll: false,
-  //   }
-
-  //   let bodyConfig = {
-  //     displayRowCheckbox: false,
-  //     deselectOnClickaway: false,
-  //     stripedRows: false,
-  //     showRowHover: false
-  //   }
 	}
 }
 
 function mapStateToProps(state) {
-  return { orders: state.orders.all }
+  return {
+    rooms: state.rooms.all,
+    token: state.auth.token
+  }
 }
 
-export default connect( mapStateToProps, { fetchOrders } )(Schedule);
+export default connect( mapStateToProps, { fetchRooms } )(Schedule);
+
