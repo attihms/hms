@@ -1,1 +1,1 @@
-dev: node_modules/.bin/sequelize db:migrate && nodemon src/ --exec babel-node
+dev: nodemon src/ --exec babel-node

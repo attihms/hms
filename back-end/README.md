@@ -16,18 +16,37 @@ Getting up and running is as easy as 1, 2, 3.
     ```
     cd path/to/hms; npm install
     ```
-3. Start your app
+3. Run db migrations
+
+    ```
+    node_modules/.bin/sequelize db:migrate
+    ```
+
+4. Run db seeds
+
+    ```
+    node_modules/.bin/sequelize db:seed:all
+    ```
+
+5. Start application
 
     ```
     npm start
     ```
 
-4. Create sample date
+## To undo db migrations & seeds
+
+    ```
+    node_modules/.bin/sequelize db:migrate:undo:all
+    node_modules/.bin/sequelize db:seed:undo:all
+    ```
+
+## Create sample date
 
     ```
     npm run generate_sample_data
     ```
-    
+
 ## Testing
 
 Simply run `npm test` and all your tests in the `test/` directory will be run.
