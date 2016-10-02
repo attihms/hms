@@ -34,13 +34,17 @@ class Calendar extends Component {
     previous() {
         var week = this.state.week;
         week.add(-1, 'w');
-        this.setState({ week: week });
+        this.setState({ week: week }, () => {
+            this.props.onDateUpdate(this.state.week);
+        });
     }
 
     next() {
         var week = this.state.week;
         week.add(1, 'w');
-        this.setState({ week: week });
+        this.setState({ week: week }, () => {
+            this.props.onDateUpdate(this.state.week);
+        });
     }
 
     select(day) {
@@ -52,6 +56,8 @@ class Calendar extends Component {
 
     render() {
         const { rooms } = this.state;
+
+        const startDate = this.state.week.clone();
 
         if(!_.isArray(rooms)) {
           return <div>Loading...</div>
@@ -68,7 +74,7 @@ class Calendar extends Component {
                         <ArrowRight />
                     </i>
                 </div>
-                <DayNames />
+                <DayNames startDate={startDate}/>
                 {this.renderWeeks()}
             </div>
         );

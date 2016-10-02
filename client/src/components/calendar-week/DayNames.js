@@ -4,15 +4,17 @@ import styles from './Calendar.scss';
 
 export default class DayNames extends Component {
     render() {
+        const startDate = this.props.startDate.clone();
+
         return <div className={ styles.week  + ' ' +  styles.names }>
             <span className={ styles.day }>Room</span>
-            <span className={ styles.day }>Sun</span>
-            <span className={ styles.day }>Mon</span>
-            <span className={ styles.day }>Tue</span>
-            <span className={ styles.day }>Wed</span>
-            <span className={ styles.day }>Thu</span>
-            <span className={ styles.day }>Fri</span>
-            <span className={ styles.day }>Sat</span>
+            <span className={ styles.day }>{startDate.format('ddd')}</span>
+            <span className={ styles.day }>{startDate.add(1, 'd').format('ddd')}</span>
+            <span className={ styles.day }>{startDate.add(2, 'd').format('ddd')}</span>
+            <span className={ styles.day }>{startDate.add(3, 'd').format('ddd')}</span>
+            <span className={ styles.day }>{startDate.add(4, 'd').format('ddd')}</span>
+            <span className={ styles.day }>{startDate.add(5, 'd').format('ddd')}</span>
+            <span className={ styles.day }>{startDate.add(6, 'd').format('ddd')}</span>
         </div>;
     }
 }

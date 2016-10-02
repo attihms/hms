@@ -15,6 +15,9 @@ import {
   editRoom,
   clearRoom
 } from './room_CRUD';
+import {
+  fetchSchedule
+} from './schedule_CRUD';
 
 // const port = !!window.location.port ? ':' + window.location.port : null;
 // export const ROOT_URL = `${window.location.protocol}//${window.location.hostname}${port}/api`;
@@ -44,8 +47,11 @@ export const DELETE_ROOM = 'DELETE_ROOM';
 export const EDIT_ROOM = 'EDIT_ROOM';
 export const CLEAR_ROOM = 'CLEAR_ROOM';
 
+export const FETCH_SCHEDULE = 'FETCH_SCHEDULE';
+
 export {
   signup, login,
   fetchOrders, createOrder, fetchOrder, deleteOrder, editOrder, clearOrder,
-  fetchRooms, createRoom, fetchRoom, deleteRoom, editRoom, clearRoom
+  fetchRooms, createRoom, fetchRoom, deleteRoom, editRoom, clearRoom,
+  fetchSchedule
 }

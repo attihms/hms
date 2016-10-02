@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRooms } from '../../actions';
+import { fetchRooms, fetchSchedule } from '../../actions';
 
 import { Link, browserHistory } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
@@ -19,11 +19,18 @@ class Schedule extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      startDate: moment()
+    };
+
+    this.dateUpdateHandler = this.dateUpdateHandler.bind(this);
   }
 
 	componentWillMount() {
+    console.dir(this.props);
 		this.props.fetchRooms();
+    let dateObj = this.getStartEnd(this.state.startDate);
+    this.props.fetchSchedule(dateObj.start, dateObj.end);
 	}
 
   componentWillUnmount() {}
@@ -34,6 +41,15 @@ class Schedule extends Component {
         <NavigationBack/>
       </IconButton>
     )
+  }
+
+  getStartEnd(date) {
+    let start = date.clone().format('YYYY-MM-DD');
+    let end = date.clone().add(6, 'd').format('YYYY-MM-DD');
+    return {
+      start,
+      end
+    }
   }
 
   renderBarRightIcon() {
@@ -52,19 +68,26 @@ class Schedule extends Component {
     )
   }
 
+  dateUpdateHandler(newDate) {
+    console.log(newDate.format('YYYY-MM-DD'));
+    let dateObj = this.getStartEnd(this.state.startDate);
+    this.props.fetchSchedule(dateObj.start, dateObj.end);
+  }
+
 	render() {
 
-    let { rooms } = this.props;
+    const { rooms } = this.props;
+    const { startDate } = this.state;
 
     return (
       <div>
         <AppBar
           title="Rooms Managment"
           iconElementLeft={this.renderBarLeftIcon()}
-          iconElementRight={ this.renderBarRightIcon() }
+          iconElementRight={this.renderBarRightIcon()}
         />
         <div style={{padding: 20}}>
-          <Calendar selected={moment()} rooms={rooms}/>
+          <Calendar selected={startDate} rooms={rooms} onDateUpdate={this.dateUpdateHandler}/>
         </div>
       </div>
     );
@@ -78,5 +101,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect( mapStateToProps, { fetchRooms } )(Schedule);
+export default connect( mapStateToProps, { fetchRooms, fetchSchedule } )(Schedule);
 
