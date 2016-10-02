@@ -33,7 +33,10 @@ class NewRoomDialog extends Component {
     super(props);
 
     this.state = {
-      open: false
+      open: false,
+      editMode: false,
+      roomId: null,
+      room: null
     };
 
     this.handleOpen = this.handleOpen.bind(this);
@@ -42,21 +45,38 @@ class NewRoomDialog extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  // componentWillMount() {
-  //   console.log('hello');
-  //   const {
-  //     token,
-  //     fetchRoom
-  //   } = this.props;
+  componentWillReceiveProps(nextProps) {
+    let editMode = false;
+    let room = null
+    let roomId = null;
+    if (nextProps.roomData) {
+      roomId = nextProps.roomData.id;
+      editMode = true;
+    }
+    this.setState({
+      editMode,
+      roomId
+    });
+  }
 
-  //   if (token) {
-  //     fetchRoom(1)
-  //       .then( (res) => console.dir(res) );
-  //   }
-  // }
+  componentWillUnmount() {
+    this.props.clearRoom();
+  }
 
   handleOpen() {
-    this.setState({open: true});
+    const { token, fetchRoom } = this.props;
+    const { roomId } = this.state;
+
+    // in case in the future we will show more room data
+    if (token && roomId) {
+      fetchRoom(roomId)
+        .then(res => this.setState({
+          open: true,
+          room: res.payload.data
+        }));
+    } else {
+      this.setState({open: true});
+    }
   }
 
   handleClose() {
@@ -65,12 +85,19 @@ class NewRoomDialog extends Component {
   }
 
   onSubmit(formProps) {
-    this.props.createRoom(formProps)
-        .then(() => {
+    if (this.state.roomId) {
+      this.props.editRoom(this.state.roomId, formProps)
+        .then( () => {
+          this.props.updateRoomDataTable();
           this.handleClose();
-          this.props.newRoomCreated();
-          // this.context.router.push('/room_management/settings');
         });
+    } else {
+      this.props.createRoom(formProps)
+        .then( () => {
+          this.props.updateRoomDataTable();
+          this.handleClose();
+        });
+    }
   }
 
   renderField(fieldConfig, field)  { // val, key
@@ -112,7 +139,6 @@ class NewRoomDialog extends Component {
           <Field
             name={field}
             component={Toggle}
-            hintText={fieldConfig.hint || null}
             labelPosition="right"
             label={fieldConfig.label}
           />
@@ -124,7 +150,6 @@ class NewRoomDialog extends Component {
           <Field
             name={field}
             component={Toggle}
-            hintText={fieldConfig.hint || null}
             labelPosition="right"
             label={this.props[field] ? 'Active' : 'Inactive'}
             style={{marginTop: 40, height: 25}}
@@ -145,9 +170,13 @@ class NewRoomDialog extends Component {
 
   render() {
 
-    const editMode = false;
+    const { handleSubmit, pristine, reset, submitting } = this.props;
 
-    const { handleSubmit, pristine, reset, submitting } = this.props
+    const { room, roomId, editMode } = this.state;
+
+    const roomBarTitle = editMode ? `Edit Room #${roomId}` : `Create New Room`;
+
+    const buttonLabel = editMode ? `Edit Room` : `Create New Room`;
 
     const actions = [
       <FlatButton
@@ -167,9 +196,9 @@ class NewRoomDialog extends Component {
 
     return (
       <div>
-        <RaisedButton label="Create New Room" onTouchTap={this.handleOpen} />
+        <RaisedButton label={buttonLabel} onTouchTap={this.handleOpen} />
         <Dialog
-          title="Room Information"
+          title={roomBarTitle}
           modal={true}
           open={this.state.open}
           actions={actions}

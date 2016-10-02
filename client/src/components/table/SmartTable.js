@@ -53,6 +53,7 @@ class SmartTable extends Component {
     };
 
     this.onPageClick = this.onPageClick.bind(this);
+    this._onRowSelection = this._onRowSelection.bind(this, this.props);
   }
 
   componentWillReceiveProps(props) {
@@ -83,6 +84,7 @@ class SmartTable extends Component {
     }
 
     this.setState({
+      selectedRowArray: [],
       data: sortedData,
       paginatedData: _.take(_.drop(sortedData, 0), this.props.limit),
       offset: 0,
@@ -91,8 +93,13 @@ class SmartTable extends Component {
     });
   }
 
+  _onRowSelection(props, rowNumber) {
+    props.onRowSelectionHandler(this.state.paginatedData[rowNumber]);
+    this.setState({selectedRowArray: rowNumber});
+  }
+
   render() {
-    const { limit, total, tableHeaders, config, onRowSelection } = this.props;
+    const { limit, total, tableHeaders, config } = this.props;
     let { paginatedData, offset } = this.state;
 
     if(!_.isArray(paginatedData)) {
@@ -102,7 +109,7 @@ class SmartTable extends Component {
     // <SmartTableRow key={index} {...{ row, index, tableHeaders }} />
 
     return (
-      <Table className={ styles.table } selectable={ config.selectable } onRowSelection={ onRowSelection }>
+      <Table className={ styles.table } selectable={ config.selectable } onRowSelection={ this._onRowSelection }>
         <TableHeader displaySelectAll={ config.displaySelectAll } adjustForCheckbox={ config.adjustForCheckbox }>
           <TableRow>
             <TableHeaderColumn colSpan={ tableHeaders.length }>
@@ -128,9 +135,10 @@ class SmartTable extends Component {
           showRowHover={ config.showRowHover } 
           stripedRows={ config.stripedRows } 
           displayRowCheckbox={ config.displayRowCheckbox }
+          deselectOnClickaway={ !config.displayRowCheckbox }
         >
           { paginatedData.map((row, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} selected={_.includes(this.state.selectedRowArray, index) }>
                 {tableHeaders.map((header, propIndex) => (
                   <TableRowColumn key={propIndex}>
                     {formatTableCell(row[header.dataAlias], header.format, row)}

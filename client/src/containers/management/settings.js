@@ -38,13 +38,11 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      currentRoomNumber: 5,
-      maxRoomNumber: 50
+      selectedRoom: null
     };
 
-    this.renderRoomNumber = this.renderRoomNumber.bind(this);
-    this.handleChangeRoomNumber = this.handleChangeRoomNumber.bind(this);
-    this.newRoomCreatedHandelr = this.newRoomCreatedHandelr.bind(this);
+    this.updateRoomDataTableHandler = this.updateRoomDataTableHandler.bind(this);
+    this.onRowSelectionHandler = this.onRowSelectionHandler.bind(this);
   }
 
 	componentWillMount() {
@@ -77,24 +75,15 @@ class Settings extends Component {
     )
   }
 
-  handleChangeRoomNumber(event, index, value) {
-    this.setState({currentRoomNumber: value});
+  onRowSelectionHandler(roomObj) {
+    if (roomObj) {
+      this.setState({selectedRoom: roomObj});
+    } else {
+      this.setState({selectedRoom: null});
+    }
   }
 
-  renderRoomNumber(max, current) {
-    let arr = _.range(1, max + 1).map(val => _.assign({}, {id: val, name: val}) );
-    return (
-      <DropDownMenu value={current} onChange={this.handleChangeRoomNumber}>
-        {arr.map(row => <MenuItem key={row.id} value={row.id} primaryText={`${row.name} rooms`} />)}
-      </DropDownMenu>
-    )
-  }
-
-  onRowSelection(selectedRows) {
-    // console.dir(selectedRows);
-  }
-
-  newRoomCreatedHandelr() {
+  updateRoomDataTableHandler() {
     this.props.fetchRooms();
   }
 
@@ -102,8 +91,7 @@ class Settings extends Component {
 
     let { rooms } = this.props;
 
-    let currentRoomNumber = this.state.currentRoomNumber;
-    let maxRoomNumber = this.state.maxRoomNumber;
+    let selectedRoom = this.state.selectedRoom;
 
     const headerArr = [
       {alias: 'ID', dataAlias: 'id', format: {type: 'text'}},
@@ -134,7 +122,7 @@ class Settings extends Component {
       total: rooms.total,
       limit: 10,
       onPageClick: this.goTo,
-      onRowSelection: this.onRowSelection,
+      onRowSelectionHandler: this.onRowSelectionHandler,
       config: {
         selectable: true,
         displaySelectAll: true,
@@ -145,24 +133,6 @@ class Settings extends Component {
       }
     };
 
-    // const rows = [];
-
-    // const headers = [
-    //   {value: 'Id', type: 'ReadOnly', width: 50},
-    //   {value: 'Name', type: 'TextField', width: 150},
-    //   {value: 'Room Type', type: 'DropDownMenu', width: 150},
-    //   {value: 'Status', type: 'TextField', width: 50},
-    //   {value: 'Active/Inactive', type: 'Toggle', width: 50},
-    //   {value: 'Last Edited By', type: 'ReadOnly', width: 100}
-    // ];
-
-    // <EditTable
-    //       onChange={this.onChangeHandler()}
-    //       rows={rows}
-    //       headerColumns={headers}
-    //     />
-    //     Please choose the number of rooms in your hotel: {this.renderRoomNumber(maxRoomNumber, currentRoomNumber)}
-
     return (
       <div>
         <AppBar
@@ -172,7 +142,7 @@ class Settings extends Component {
         />
         <br />
         <SmartTable {...tableConf}>
-          <NewRoomDialog newRoomCreated={this.newRoomCreatedHandelr}/>
+          <NewRoomDialog roomData={selectedRoom} updateRoomDataTable={this.updateRoomDataTableHandler}/>
         </SmartTable>
       </div>
     );
