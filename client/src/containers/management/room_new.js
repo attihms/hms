@@ -67,8 +67,9 @@ class NewRoomDialog extends Component {
   onSubmit(formProps) {
     this.props.createRoom(formProps)
         .then(() => {
-          this.context.router.push('/room_management/settings');
           this.handleClose();
+          this.props.newRoomCreated();
+          // this.context.router.push('/room_management/settings');
         });
   }
 
@@ -169,7 +170,7 @@ class NewRoomDialog extends Component {
         <RaisedButton label="Create New Room" onTouchTap={this.handleOpen} />
         <Dialog
           title="Room Information"
-          modal={false}
+          modal={true}
           open={this.state.open}
           actions={actions}
           onRequestClose={this.handleClose}
@@ -189,7 +190,7 @@ function validate(values) {
   const errors = {};
 
   _.each(FIELDS_ROOM, (type, field) => {
-    if(!values[field]){
+    if(!values[field] && field !== 'active'){
       errors[field] = `Please enter a ${field}`;
     }
   })

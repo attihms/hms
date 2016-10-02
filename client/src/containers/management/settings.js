@@ -44,6 +44,7 @@ class Settings extends Component {
 
     this.renderRoomNumber = this.renderRoomNumber.bind(this);
     this.handleChangeRoomNumber = this.handleChangeRoomNumber.bind(this);
+    this.newRoomCreatedHandelr = this.newRoomCreatedHandelr.bind(this);
   }
 
 	componentWillMount() {
@@ -91,6 +92,10 @@ class Settings extends Component {
 
   onRowSelection(selectedRows) {
     // console.dir(selectedRows);
+  }
+
+  newRoomCreatedHandelr() {
+    this.props.fetchRooms();
   }
 
 	render() {
@@ -167,7 +172,7 @@ class Settings extends Component {
         />
         <br />
         <SmartTable {...tableConf}>
-          <NewRoomDialog />
+          <NewRoomDialog newRoomCreated={this.newRoomCreatedHandelr}/>
         </SmartTable>
       </div>
     );

@@ -48,7 +48,7 @@ class SmartTable extends Component {
     this.state = {
       isAsc: false,
       sortHeader: null,
-      paginatedData: [],
+      paginatedData: null,
       offset: 0
     };
 
@@ -95,7 +95,7 @@ class SmartTable extends Component {
     const { limit, total, tableHeaders, config, onRowSelection } = this.props;
     let { paginatedData, offset } = this.state;
 
-    if(!paginatedData.length) {
+    if(!_.isArray(paginatedData)) {
       return <div>Loading...</div>
     }
 
