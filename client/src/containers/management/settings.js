@@ -14,8 +14,6 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import EditTable from 'material-ui-table-edit';
-
 import NewRoomDialog from './room_new';
 import SmartTable from '../../components/table/SmartTable';
 
@@ -117,7 +115,7 @@ class Settings extends Component {
     //   {alias: 'Status', dataAlias: 'status', format: {type: 'status'}},
     //   {alias: 'Active/Inactive', dataAlias: 'active', format: {type: 'toggle'}}
     // ];
-    // 
+    //
     // let rooms = [
     //   {id: 1, name: 101, roomType: 'Superior Twin', status: 1, active: true},
     //   {id: 2, name: 102, roomType: 'Superior Twin', status: 1, active: true},

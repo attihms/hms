@@ -45,9 +45,7 @@ module.exports = function () {
 
   const room = sequelize.define(
     'rooms',
-    _.extend(
-      roomModel
-    ),
+    roomModel,
     options
   );
 
