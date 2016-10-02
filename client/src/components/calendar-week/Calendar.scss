@@ -17,14 +17,14 @@
     &.header {
       float: left;
       width: 100%;
-      background: #2875C7;
+      background: #ef6c00;
       height: 40px;
       color: white;
 
       > {
         * {
           height: 40px;
-          line-height: 40px !important;
+          line-height: 40px;
           display: inline-block;
           vertical-align: middle;
         }
@@ -39,6 +39,7 @@
           -moz-box-sizing: border-box;
           padding: 0 10px;
           cursor: pointer;
+          padding-top: 6px;
 
           &.faAngleLeft {
             text-align: left;
@@ -84,7 +85,7 @@
         font-size: 0.75em;
         text-align: center;
         height: 30px;
-        line-height: 30px !important;
+        line-height: 30px;
         display: inline-block;
         vertical-align: middle;
         background: white;
@@ -99,19 +100,22 @@
           background: #E3F2FF;
         }
 
-        &.differentMonth {
+        /*&.differentMonth {
           color: #C0C0C0;
-        }
+        }*/
 
         &.selected {
-          background: #2875C7;
+          background: #8BC34A;
           color: white;
         }
       }
-
+      
       &.names > span {
-        color: #2875C7;
+        color: #fff;
+        background: #ef6c00;
         font-weight: bold;
+        line-height: 13px;
+        padding-top: 3px;
       }
     }
   }

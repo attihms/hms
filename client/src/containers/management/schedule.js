@@ -27,7 +27,6 @@ class Schedule extends Component {
   }
 
 	componentWillMount() {
-    console.dir(this.props);
 		this.props.fetchRooms();
     let dateObj = this.getStartEnd(this.state.startDate);
     this.props.fetchSchedule(dateObj.start, dateObj.end);
@@ -69,14 +68,18 @@ class Schedule extends Component {
   }
 
   dateUpdateHandler(newDate) {
-    console.log(newDate.format('YYYY-MM-DD'));
     let dateObj = this.getStartEnd(this.state.startDate);
     this.props.fetchSchedule(dateObj.start, dateObj.end);
   }
 
+  dayClickHandler(selectedDay, selectedRoom) {
+    console.log('selectedDay', selectedDay.date.format('YYYY-MM-DD'));
+    console.log('selectedRoom', selectedRoom);
+  }
+
 	render() {
 
-    const { rooms } = this.props;
+    const { rooms, schedule } = this.props;
     const { startDate } = this.state;
 
     return (
@@ -87,7 +90,13 @@ class Schedule extends Component {
           iconElementRight={this.renderBarRightIcon()}
         />
         <div style={{padding: 20}}>
-          <Calendar selected={startDate} rooms={rooms} onDateUpdate={this.dateUpdateHandler}/>
+          <Calendar
+            selected={startDate}
+            rooms={rooms}
+            schedule={schedule}
+            onDateUpdate={this.dateUpdateHandler}
+            onDayClick={this.dayClickHandler}
+          />
         </div>
       </div>
     );
@@ -97,6 +106,7 @@ class Schedule extends Component {
 function mapStateToProps(state) {
   return {
     rooms: state.rooms.all,
+    schedule: state.schedule.all,
     token: state.auth.token
   }
 }
