@@ -5,8 +5,17 @@ import { Link } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
-export default class Nav extends Component {
+class Nav extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {open: false};
+  }
+
+  handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
 
@@ -16,30 +25,37 @@ export default class Nav extends Component {
     }
 
     return (
-      <Drawer>
-        <AppBar 
-          title={'HMS'}
-          iconElementLeft={<span></span>}
+      <div>
+        <AppBar
+          onLeftIconButtonTouchTap={this.handleToggle}
         />
-        <MenuItem>
-          <Link to={`/reservations/overview`} style={buttonStyle}>
-            Reservations
-          </Link>
-        </MenuItem>
-        <MenuItem>
-          Room Management
+        <Drawer open={this.state.open}>
+          <AppBar
+            title='HMS'
+            onLeftIconButtonTouchTap={this.handleToggle}
+          />
           <MenuItem>
-            <Link to={`/room_management/schedule`} style={buttonStyle}>
-              Schadule
+            <Link to={`/reservations/overview`} style={buttonStyle}>
+              Reservations
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link to={`/room_management/settings`} style={buttonStyle}>
-              Settings
-            </Link>
+            Room Management
+            <MenuItem>
+              <Link to={`/room_management/schedule`} style={buttonStyle}>
+                Schadule
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to={`/room_management/settings`} style={buttonStyle}>
+                Settings
+              </Link>
+            </MenuItem>
           </MenuItem>
-        </MenuItem>
-      </Drawer>
+        </Drawer>
+      </div>
     );
   }
 }
+
+export default Nav;
