@@ -13,14 +13,6 @@ export default class Week extends Component {
             room = this.props.room;
 
         const { roomSchedule } = this.props;
-        let startDate = null;
-        let endDate = null;
-
-        if (roomSchedule) {
-            console.dir(roomSchedule);
-            startDate = moment(roomSchedule[0].checkIn);
-            endDate   = moment(roomSchedule[0].checkOut);
-        }
 
         days.push(<span key={room.id} className={styles.day}>{room.name}</span>);
 
@@ -32,25 +24,25 @@ export default class Week extends Component {
                 isToday: date.isSame(new Date(), 'day'),
                 date: date
             };
-
-            let active = false;
-            if (startDate && endDate) {
-                active = day.date.isBetween(startDate, endDate, 'days', '[]');
+            
+            let bookingHours = {
+                startHour: null,
+                hours: null,
+                untilEnd: null
+            };
+            if (roomSchedule && roomSchedule[day.number]) {
+                bookingHours = roomSchedule[day.number];
             }
 
             days.push(
                 <span key={day.date.toString()} 
-                    className={styles.day + ' ' + (day.isToday ? styles.today : '')
-                    + ' ' + (active ? styles.selected : '')} 
+                    className={styles.day + ' ' + (day.isToday ? styles.today : '')} 
                     onClick={this.props.select.bind(null, day, room)}
                 >
-                    {   startDate && endDate ?
-                        (day.date.isBetween(startDate, endDate, 'days', '[]') ? 'true' : 'false') :
-                        'false'
-                    }
+                    <Day day={day} {...bookingHours}/>
                 </span>
             );
-            //<Day day={day} />
+            
             date = date.clone();
             date.add(1, 'd');
         }

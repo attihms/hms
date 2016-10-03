@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import moment from 'moment';
 
 import DayNames from './DayNames';
 import Week from './Week';
@@ -95,6 +96,7 @@ class Calendar extends Component {
         }
 
         let groupedByRooms = {};
+        // grouping this week reservation by rooms
         schedule.map(val => {
             if (!groupedByRooms[val.roomId]) {
                 groupedByRooms[val.roomId] = [];
@@ -102,7 +104,60 @@ class Calendar extends Component {
             groupedByRooms[val.roomId].push(val);
         });
 
-        return groupedByRooms;
+        let roomObj = {};
+
+        for (let [key, val] of groupedByRooms) {
+            // loop through each room and sort the reservation of the week by hours
+            val.sort(function (a, b) {
+                return moment.utc(a.checkIn).diff(moment.utc(b.checkIn))
+            });
+            let obj = {};
+            // map through the room reservation for the week
+            val.map(v => {
+                let ci = moment(v.checkIn);
+                let co = moment(v.checkOut);
+                let duration = moment.duration(co.minutes(0).seconds(0).diff(ci.minutes(0).seconds(0)));
+                let hours = Math.ceil(duration.asHours());
+
+                // create the first Day Data
+                let isHoursFillTheDay = hours > (23 - ci.format('H')) ? true : false;
+                obj[ci.date()] = {
+                    startHour: parseInt(ci.format('H')),
+                    hours: isHoursFillTheDay ? (23 - ci.format('H')) : (co.format('H') - ci.format('H')),
+                    untilEnd: isHoursFillTheDay
+                }
+
+                if (obj[ci.date()].untilEnd) {
+                    // the reservation continues to the next day 
+                    hours = hours - obj[ci.date()].hours;
+                    let counter = 1;
+                    while (hours > 24) {
+                        // while we over 24 hours the Day Data will have a full day (24 hours)
+                        let counderDay = ci.clone().add(counter, 'day').hours(0).minutes(0).seconds(0);
+                        obj[counderDay.date()] = {
+                            startHour: 0,
+                            hours: 24,
+                            untilEnd: true
+                        }
+                        counter++;
+                        hours = hours - obj[counderDay.date()].hours;
+                    }
+                    if (hours <= 24) {
+                        // we have few hours left in the reservation, we add the last Day Date
+                        let counderDay = ci.clone().add(counter, 'day').hours(0).minutes(0).seconds(0);
+                        obj[counderDay.date()] = {
+                            startHour: 0,
+                            hours: (co.format('H') - counderDay.format('H')),
+                            untilEnd: false
+                        }
+                    }
+                }
+            });
+            // assign the room with the week reservation in a Day Data format
+            roomObj[key] = obj;
+        }
+
+        return roomObj;
     }
 
     renderWeeks() {
@@ -116,6 +171,13 @@ class Calendar extends Component {
         const groupedByRooms = this.reselectSchedule();
 
         return rooms.map((room, index) => {
+            if (!groupedByRooms[room.id]) {
+                groupedByRooms[room.id] = {
+                    startHour: null,
+                    hours: null,
+                    untilEnd: null
+                };
+            }
             return (
                 <Week 
                     key={index} 
@@ -133,8 +195,7 @@ class Calendar extends Component {
 
     renderMonthLabel() {
         return <span>
-            {this.state.week.format('MMMM Do, YYYY')} - 
-            {this.state.week.clone().add(6, 'd').format('MMMM Do, YYYY')}
+            {this.state.week.format('MMMM Do, YYYY')} - {this.state.week.clone().add(6, 'd').format('MMMM Do, YYYY')}
         </span>;
     }
 }
