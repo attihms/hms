@@ -10,15 +10,32 @@ class Schedule {
   find(params) {
     const reservations = this.app.service('reservations');
 
-    return reservations.find({
-      query: {
-        checkIn: {
-          $gt: params.query.checkIn
+    const { checkIn, checkOut } = params.query;
+    let roomId = params.query.roomId;
+
+    let query = {
+      $or: [
+        {
+          checkIn: {
+            $gt: checkIn,
+            $lt: checkOut
+          }
         },
-        checkOut: {
-          $lt: params.query.checkOut
+        {
+          checkOut: {
+            $gt: checkIn,
+            $lt: checkOut
+          }
         }
-      }
+      ]
+    };
+
+    if ( roomId ) {
+      query.roomId = roomId;
+    }
+
+    return reservations.find({
+      query: query
     });
     // .then(reservations => {
     //   return {
