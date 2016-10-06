@@ -1,6 +1,6 @@
-.env
-back-end/dist
 node_modules
+public
+json
 DS_Store
 .DS_Store
 npm-debug.log
