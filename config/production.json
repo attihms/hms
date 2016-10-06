@@ -1,0 +1,14 @@
+{
+  "host": "ec2-54-228-213-111.eu-west-1.compute.amazonaws.com",
+  "port": 80,
+  "db_url": "postgres://kywtigwmvbemue:TnbvVMQ5VaKJP8jQ4K02viqkMy@ec2-54-228-213-111.eu-west-1.compute.amazonaws.com:5432/d8bbi8nk5tdgkl",
+  "db_dialect": "postgres",
+  "public": "../public/",
+  "auth": {
+    "idField": "id",
+    "token": {
+      "secret": "7htadA+35dBxgdkGAhVSI1ScdW3t0Dca1H4L/ouk9O76QLRD9Sn3Z/nTuPm3SsHlay62fzWWkb9muSilOGTBqQ=="
+    },
+    "local": {}
+  }
+}

@@ -1,5 +1,2 @@
-web: node dist/index.js
-dev: nodemon index.js --exec babel-node
-build: node_modules/.bin/babel -w src/ -d dist build -s --optimize_for_size --max_old_space_size=920 --gc_interval=100
-test: node_modules/.bin/mocha --compilers js:babel-core/register
-generate_sample_data: node data/create-sample
+dev: nodemon src/ --exec babel-node
+web:  NODE_ENV=production node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all && node src/ --exec babel-node

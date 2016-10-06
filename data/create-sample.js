@@ -1,16 +1,12 @@
 'use strict';
 
-var _sequelize = require('sequelize');
-
-var _sequelize2 = _interopRequireDefault(_sequelize);
+// var _sequelize = require('sequelize');
+//
+// var _sequelize2 = _interopRequireDefault(_sequelize);
 
 var _faker = require('faker');
 
 var _faker2 = _interopRequireDefault(_faker);
-
-var _models = require('../models');
-
-var _models2 = _interopRequireDefault(_models);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22,7 +18,10 @@ function randomizeFloatNumber(min, max) {
     return (Math.random() * (min - max) + max).toFixed(1);
 }
 
-_models2.default.reservation.sync({
+var app = require('../src/app');
+var reservations = app.get('models').reservations;
+
+reservations.sync({
     force: true
 }).then(function () {
     var titles = ['Mr', 'Ms', 'Mrs'];
@@ -41,7 +40,7 @@ _models2.default.reservation.sync({
         for (var _iterator = Array(100).keys()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var i = _step.value;
 
-            _models2.default.reservation.create({
+            reservations.create({
                 firstName: _faker2.default.name.firstName(),
                 lastName: _faker2.default.name.lastName(),
                 title: randomize(titles),
@@ -51,6 +50,7 @@ _models2.default.reservation.sync({
                 bookingSourceId: i,
                 bookingSourceName: randomize(bookingSources),
                 roomId: i,
+                roomTypeId: i,
                 roomType: randomize(roomTypes),
                 price: randomizeFloatNumber(100, 2000),
                 numberOfRoom: randomize(numbers),
