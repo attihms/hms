@@ -21,9 +21,9 @@ import {
 
 // const port = !!window.location.port ? ':' + window.location.port : null;
 // export const ROOT_URL = `${window.location.protocol}//${window.location.hostname}${port}/api`;
-const protocol = window.location.protocol;
-const hostname = window.location.hostname;
-const port = ':3030';
+const protocol = process.env.NODE_ENV === 'production' ? 'https:' : window.location.protocol;
+const hostname = process.env.NODE_ENV === 'production' ? 'hms-back-end.herokuapp.com' : window.location.hostname;
+const port = process.env.NODE_ENV === 'production' ? '' : ':3030';
 const apiPrefix = ''; // '/api';
 export const ROOT_URL = `${protocol}//${hostname}${port}${apiPrefix}`;
 
