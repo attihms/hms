@@ -35,6 +35,6 @@ export default (
       </Route>
 
     </Route>
-    <Redirect from='*' to='/' />
+    <Redirect from='*' to='/reservations/overview' />
   </Route>
 )
