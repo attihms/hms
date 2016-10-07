@@ -1,5 +1,4 @@
 .env
-back-end/dist
 node_modules
 DS_Store
 .DS_Store

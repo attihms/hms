@@ -19,8 +19,6 @@ import {
   fetchSchedule
 } from './schedule_CRUD';
 
-// const port = !!window.location.port ? ':' + window.location.port : null;
-// export const ROOT_URL = `${window.location.protocol}//${window.location.hostname}${port}/api`;
 const protocol = process.env.NODE_ENV === 'production' ? 'https:' : window.location.protocol;
 const hostname = process.env.NODE_ENV === 'production' ? 'hms-back-end.herokuapp.com' : window.location.hostname;
 const port = process.env.NODE_ENV === 'production' ? '' : ':3030';
