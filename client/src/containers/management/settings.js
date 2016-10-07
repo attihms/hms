@@ -5,11 +5,6 @@ import { fetchRooms } from '../../actions';
 import { Link, browserHistory } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
 
-import AppBar from 'material-ui/AppBar';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton/IconButton';
-import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -50,30 +45,6 @@ class Settings extends Component {
 	}
 
   componentWillUnmount() {}
-
-  renderBarLeftIcon() {
-    return (
-      <IconButton iconStyle={{color: '#fff'}} onClick={browserHistory.goBack}>
-        <NavigationBack/>
-      </IconButton>
-    )
-  }
-
-  renderBarRightIcon() {
-    return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton><MoreVertIcon /></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Refresh" />
-        <MenuItem primaryText="Help" />
-        <MenuItem primaryText="Sign out" />
-      </IconMenu>
-    )
-  }
 
   onRowSelectionHandler(roomObj) {
     if (roomObj) {
@@ -135,12 +106,6 @@ class Settings extends Component {
 
     return (
       <div>
-        <AppBar
-          title="Rooms Settings"
-          iconElementLeft={ this.renderBarLeftIcon() }
-          iconElementRight={ this.renderBarRightIcon() }
-        />
-        <br />
         <SmartTable {...tableConf}>
           <NewRoomDialog roomData={selectedRoom} updateRoomDataTable={this.updateRoomDataTableHandler}/>
         </SmartTable>

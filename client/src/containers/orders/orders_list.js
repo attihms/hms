@@ -5,12 +5,6 @@ import { fetchOrders } from '../../actions';
 import { Link } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
 
-import AppBar from 'material-ui/AppBar';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
 import RaisedButton from 'material-ui/RaisedButton';
 import SmartTable from '../../components/table/SmartTable';
 
@@ -34,22 +28,6 @@ class OrdersList extends Component {
 	}
 
   componentWillUnmount() {}
-
-  renderBarRightIcon() {
-    return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton><MoreVertIcon /></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Refresh" />
-        <MenuItem primaryText="Help" />
-        <MenuItem primaryText="Sign out" />
-      </IconMenu>
-    )
-  }
 
 	render() {
     let { orders } = this.props;
@@ -83,12 +61,6 @@ class OrdersList extends Component {
 
     return (
       <div>
-        <AppBar
-          title="Reservations Overview"
-          iconElementLeft={<span></span>}
-          iconElementRight={ this.renderBarRightIcon() }
-        />
-        <br />
         <SmartTable {...tableConf}>
           <Link to='/reservations/new'>
             <RaisedButton label="Add New Reservation" primary={true} />

@@ -5,13 +5,6 @@ import { fetchRooms, fetchSchedule } from '../../actions';
 import { Link, browserHistory } from 'react-router';
 import { FormattedDate, FormattedTime } from 'react-intl';
 
-import AppBar from 'material-ui/AppBar';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton/IconButton';
-import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
 import Calendar from '../../components/calendar-week/Calendar';
 import moment from 'moment';
 
@@ -34,14 +27,6 @@ class Schedule extends Component {
 
   componentWillUnmount() {}
 
-  renderBarLeftIcon() {
-    return (
-      <IconButton iconStyle={{color: '#fff'}} onClick={browserHistory.goBack}>
-        <NavigationBack/>
-      </IconButton>
-    )
-  }
-
   getStartEnd(date) {
     let start = date.clone().format('YYYY-MM-DD');
     let end = date.clone().add(6, 'd').format('YYYY-MM-DD');
@@ -49,22 +34,6 @@ class Schedule extends Component {
       start,
       end
     }
-  }
-
-  renderBarRightIcon() {
-    return (
-      <IconMenu
-        iconButtonElement={
-          <IconButton><MoreVertIcon /></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Refresh" />
-        <MenuItem primaryText="Help" />
-        <MenuItem primaryText="Sign out" />
-      </IconMenu>
-    )
   }
 
   dateUpdateHandler(newDate) {
@@ -84,11 +53,6 @@ class Schedule extends Component {
 
     return (
       <div>
-        <AppBar
-          title="Rooms Managment"
-          iconElementLeft={this.renderBarLeftIcon()}
-          iconElementRight={this.renderBarRightIcon()}
-        />
         <div style={{padding: 20}}>
           <Calendar
             selected={startDate}

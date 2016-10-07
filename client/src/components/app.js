@@ -21,7 +21,7 @@ export default class App extends Component {
       <MuiThemeProvider muiTheme={muiTheme}>
         <IntlProvider locale="en">
           <div>
-            <Nav />
+            <Nav {...this.props}/>
             { this.props.children }
           </div>
         </IntlProvider>

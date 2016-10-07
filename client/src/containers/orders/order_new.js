@@ -136,19 +136,24 @@ class OrderNew extends Component {
   }
 
   renderBarRightIcon(editId) {
+    let saveLabel = editId ? 'Save' : 'Create';
     return (
       <div style={{marginTop: '5px'}}>
         <FlatButton label="Delete" onClick={this.onDeleteClick.bind(this)} style={{color: '#fff'}}/>
-        <FlatButton label="Save" style={{color: '#fff'}}/>
+        <FlatButton label={saveLabel} onClick={this.props.handleSubmit(this.onSubmit)} style={{color: '#fff'}}/>
       </div>
     )
   }
 
   onDeleteClick() {
-    this.props.deleteOrder(this.props.params.id)
-      .then( () => {
+    if (this.props.params.id) {
+      this.props.deleteOrder(this.props.params.id)
+        .then( () => {
+          this.context.router.push('/reservations/overview');
+        })
+      } else {
         this.context.router.push('/reservations/overview');
-      })
+      }
   }
 
 	render() {

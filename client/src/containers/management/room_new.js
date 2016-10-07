@@ -196,7 +196,7 @@ class NewRoomDialog extends Component {
 
     return (
       <div>
-        <RaisedButton label={buttonLabel} onTouchTap={this.handleOpen} />
+        <RaisedButton label={buttonLabel} onTouchTap={this.handleOpen} primary={true} />
         <Dialog
           title={roomBarTitle}
           modal={true}
