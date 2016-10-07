@@ -17,11 +17,7 @@ const services = require('./services');
 
 const app = feathers();
 
-if ( process.env.NODE_ENV === 'production') {
-  app.configure(configuration(path.join(__dirname, '..')));
-} else {
-  app.configure(configuration(path.join(__dirname, '..')));
-}
+app.configure(configuration(path.join(__dirname, '..')));
 
 app.use(compress())
   .options('*', cors())

@@ -17,7 +17,8 @@ module.exports = function () {
   const app = this;
 
   const sequelize = new Sequelize(app.get('db_url'), {
-    dialect: app.get('db_dialect')
+    dialect: app.get('db_dialect'),
+    dialectOptions: { ssl: app.get('connection_method').ssl }
   });
   app.set('sequelize', sequelize);
 

@@ -18,7 +18,8 @@
   "scripts": {
     "test": "npm run jshint && npm run mocha",
     "jshint": "jshint src/. test/. --config",
-    "start": "nf start dev=1",
+    "start": "node src/",
+    "dev": "nf start dev=1",
     "web": "nf start",
     "mocha": "mocha test/ --recursive",
     "generate_sample_data": "node data/create-sample"
