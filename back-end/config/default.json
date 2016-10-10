@@ -3,6 +3,9 @@
   "port": 3030,
   "db_url": "postgres://postgres:password@localhost:5430/hms_dev",
 	"db_dialect": "postgres",
+  "connection_method": {
+    "ssl": false
+  },
   "public": "../public/",
   "auth": {
     "idField": "id",

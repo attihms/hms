@@ -13,13 +13,16 @@
   "contributors": [],
   "bugs": {},
   "engines": {
-    "node": ">= 0.12.0"
+    "node": "6.5.0"
   },
   "scripts": {
     "test": "npm run jshint && npm run mocha",
     "jshint": "jshint src/. test/. --config",
-    "start": "nf start dev=1",
+    "start": "node src/",
+    "dev": "nf start dev=1",
+    "web": "nf start",
     "mocha": "mocha test/ --recursive",
+    "deploy_database": "nf start deploy_database=1",
     "generate_sample_data": "node data/create-sample"
   },
   "dependencies": {

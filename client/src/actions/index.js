@@ -20,7 +20,7 @@ import {
 } from './schedule_CRUD';
 
 const protocol = process.env.NODE_ENV === 'production' ? 'https:' : window.location.protocol;
-const hostname = process.env.NODE_ENV === 'production' ? 'hms-back-end.herokuapp.com' : window.location.hostname;
+const hostname = process.env.NODE_ENV === 'production' ? 'hms-b.herokuapp.com' : window.location.hostname;
 const port = process.env.NODE_ENV === 'production' ? '' : ':3030';
 const apiPrefix = ''; // '/api';
 export const ROOT_URL = `${protocol}//${hostname}${port}${apiPrefix}`;
